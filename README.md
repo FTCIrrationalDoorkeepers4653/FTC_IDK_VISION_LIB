@@ -1,5 +1,5 @@
 # FTC_IDK_VISION_LIB
-### Simple and Easy to Use FTC Vision Pipeline System
+### Simple and Easy to Use FTC Vision Pipeline System Library
 
 ## Installation Instructions:
 
