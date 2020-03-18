@@ -17,7 +17,7 @@
     //Gets RGB Array For Analysis-PARAMS: (Resize Ratio, startX, startY, width of area to analyze, height of area to analyze)
     int leftRGBArray[][] = imageInit.getRGBArray(0.1, 12, 20, 40, 32);
     
-    //Analyzes Selected Portion of Image (using RGB above)-PARAMS: (rgbValues 2D Array, pixelMargin for lighting, number of pixels   counted before classified)
+    //Analyzes Selected Portion of Image (using RGB above)-PARAMS: (rgbValues 2D Array, pixelMargin for lighting, number of pixels  counted before classified)
     boolean foundLeft = imageInit.detectObject(leftRGBArray, 25, 10);
 
     //Returning the Value:
