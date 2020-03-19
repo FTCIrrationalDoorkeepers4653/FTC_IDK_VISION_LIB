@@ -126,7 +126,7 @@ public class VuforiaImageInit extends Analyze {
 
   //Vuforia Capture Image Method:
     public int[][] getRGBArray(Double resizedRatio, int startX, int startY, int width, int height) {
-      //PARAMS: RESIZED RATIO CANNOT BE ZERO, THE STARTX AND STARTY + THE WIDTH AND HEIGHT MUST BE LESS THAN OR EQUAL TO IMAGE WIDTH AND HEIGHT!!!
+      //PARAMS: RESIZED RATIO CANNOT BE ZERO, THE STARTX AND STARTY + THE WIDTH AND HEIGHT MUST BE LESS THAN OR EQUAL TO IMAGE WIDTH AND HEIGHT (Usually Starts at 1280x720)!!!
         Image rgbImage;
         Bitmap bitmapImage;
         int rgbValues[][] = new int[width][height];
