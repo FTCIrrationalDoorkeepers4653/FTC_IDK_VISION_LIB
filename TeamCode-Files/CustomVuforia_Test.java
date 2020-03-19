@@ -19,6 +19,12 @@ public class CustomVuforia_Test extends LinearOpMode {
     boolean leftSide = false, rightSide = false;
     int objectPosition = 2;
 
+    //Skystone Detector Settings (w/ Default Values):
+    int skystoneDetector[] = { 0, 0, 0 };
+    String detectorName = "Skystone Detector";
+    boolean turnOnFlash = true;
+    int zoomInit = 30; //Use If Needed
+
     //Runtime Object:
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -27,7 +33,12 @@ public class CustomVuforia_Test extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+        //Hardware INITS:
         autoRobot.init(hardwareMap);
+        imageInit.initVuforia(hardwareMap, skystoneDetector, detectorName, turnOnFlash);
+
+        //Zoom INIT (If Needed):
+        imageInit.setZoom(zoomInit);
 
         waitForStart();
         runtime.reset();

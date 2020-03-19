@@ -40,7 +40,7 @@ public class VuforiaImageInit extends Analyze {
   /* METHODS!!! */
 
   //Initialize Vuforia:
-  public void initVuforia(HardwareMap hwMap, int[] detectorRGBArray, String detectorName) {
+  public void initVuforia(HardwareMap hwMap, int[] detectorRGBArray, String detectorName, boolean flash) {
       //PARAMS: MUST BE HARDWARE MAP OBJECT, RGB ARRAY OF 3, STRING NAME FOR DETECTOR
 
       //Declares Hardware Map:
@@ -59,7 +59,7 @@ public class VuforiaImageInit extends Analyze {
       Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
 
       //Turns on the Flash for Detection:
-      com.vuforia.CameraDevice.getInstance().setFlashTorchMode(true);
+      com.vuforia.CameraDevice.getInstance().setFlashTorchMode(flash);
 
       /* INITS the Custom Detector */
       try {
@@ -79,6 +79,16 @@ public class VuforiaImageInit extends Analyze {
 
     //Deactivates Vuforia Engine:
     vuforia = null;
+  }
+
+  //Sets the Zooming (If Needed):
+  public void setZoom(int zoomValue) {
+    //Converts the Zoom Factor to String:
+    String zoomSetting = Integer.toString(zoomValue);
+
+    //Sets the Zoom Settings:
+    com.vuforia.CameraDevice.getInstance().setField("opti-zoom", "opti-zoom-on");
+    com.vuforia.CameraDevice.getInstance().setField("zoom", zoomSetting);
   }
 
   //RGB Comparison Method:
