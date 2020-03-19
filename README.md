@@ -8,7 +8,7 @@ To see how it works visit Slide 7: https://docs.google.com/presentation/d/15Jl5z
 1. Download the zip…Extract All to a chosen Location
 2. Open FTC project in <i>Android Studio</i> (no OnBot Java :[ )... <b>File -> New -> Import Module -> FTC_IDK_VISION_LIB</b> (Extracted Location)
 3. Add Source Files of <i>TeamCode-Files</i> to your <b>Team Code -> src -> main -> java -> org -> firstinspires -> ftc -> teamcode</b> package
-4. Lastly, in Android Studio, go to <b>Gradle Scripts -> TeamCode-buld.release.gradle -> add the line ```implements project (':FTC_IDK_VISION_LIB')``` -> Sync Gradle</b>
+4. Lastly, in <i>Android Studio</i>, go to <b>Gradle Scripts -> TeamCode-buld.release.gradle -> add the line ```implements project (':FTC_IDK_VISION_LIB')``` -> Sync Gradle</b>
    
 ### Usage Instructions:
   
