@@ -13,7 +13,6 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 import lib.Analyze;
-import lib.Executable;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
@@ -22,9 +21,6 @@ public class VuforiaImageInit extends Analyze {
   HardwareMap hardwareMap;
 
   /* VUFORIA PIECES!!! */
-
-    //Custom Detectors:
-    public static Executable exe = new Executable();
 
     //Vuforia Elements:
     VuforiaLocalizer vuforia;
