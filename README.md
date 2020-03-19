@@ -25,5 +25,3 @@ Sample Pipeline:
     return foundLeft;
   }
   ```
-  
-See CustomVuforia_Test.java in TeamCode-Files, for more information.
