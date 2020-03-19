@@ -73,7 +73,7 @@ public class CustomVuforia_Test extends LinearOpMode {
         imageInit.disableVuforia();
 
         //Telemetry Data:
-        telemetry.addData("Classification: ", objectPosition);
+        telemetry.addData(detectorName + " Classification: ", objectPosition);
         telemetry.update();
         sleep(10000);
     }
