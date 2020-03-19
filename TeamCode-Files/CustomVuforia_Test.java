@@ -13,17 +13,10 @@ import org.firstinspires.ftc.teamcode.Autonomous.IDKAutonomousRobot;
 public class CustomVuforia_Test extends LinearOpMode {
     //Objects:
     IDKAutonomousRobot autoRobot = new IDKAutonomousRobot("None");
-    VuforiaImageInit imageInit = new VuforiaImageInit();
 
     //Variables (w/ Default Values):
     boolean leftSide = false, rightSide = false;
     int objectPosition = 2;
-
-    //Skystone Detector Settings (w/ Default Values):
-    int skystoneDetector[] = { 0, 0, 0 };
-    String detectorName = "Skystone Detector";
-    boolean turnOnFlash = true;
-    int zoomInit = 30; //Use If Needed
 
     //Runtime Object:
     private ElapsedTime runtime = new ElapsedTime();
@@ -35,10 +28,6 @@ public class CustomVuforia_Test extends LinearOpMode {
 
         //Hardware INITS:
         autoRobot.init(hardwareMap);
-        imageInit.initVuforia(hardwareMap, skystoneDetector, detectorName, turnOnFlash);
-
-        //Zoom INIT (If Needed):
-        imageInit.setZoom(zoomInit);
 
         waitForStart();
         runtime.reset();
@@ -70,10 +59,10 @@ public class CustomVuforia_Test extends LinearOpMode {
         objectPosition = compareLightValues();
 
         //Disables Vuforia:
-        imageInit.disableVuforia();
+        autoRobot.imageInit.disableVuforia();
 
         //Telemetry Data:
-        telemetry.addData(detectorName + " Classification: ", objectPosition);
+        telemetry.addData(autoRobot.detectorName + " Classification: ", objectPosition);
         telemetry.update();
         sleep(10000);
     }
@@ -82,15 +71,15 @@ public class CustomVuforia_Test extends LinearOpMode {
 
     //Two Object Detection Pipelines:
     public boolean sampleLeftPipeline() {
-      int leftRGBArray[][] = imageInit.getRGBArray(0.1, 12, 20, 40, 32);
-      boolean foundLeft = imageInit.detectObject(leftRGBArray, 25, 10);
+      int leftRGBArray[][] = autoRobot.imageInit.getRGBArray(0.1, 12, 20, 40, 32);
+      boolean foundLeft = autoRobot.imageInit.detectObject(leftRGBArray, 25, 10);
 
       return foundLeft;
     }
 
     public boolean sampleRightPipeline() {
-      int rightRGBArray[][] = imageInit.getRGBArray(0.1, 76, 20, 40, 32);
-      boolean foundRight = imageInit.detectObject(rightRGBArray, 25, 10);
+      int rightRGBArray[][] = autoRobot.imageInit.getRGBArray(0.1, 76, 20, 40, 32);
+      boolean foundRight = autoRobot.imageInit.detectObject(rightRGBArray, 25, 10);
 
       return foundRight;
     }
@@ -100,14 +89,14 @@ public class CustomVuforia_Test extends LinearOpMode {
       int position = 2; //Default Value (1-Bridge, 2-Center, 3-Wall)
 
       //Finds RGB Arrays for All Positions:
-      int leftRGBArray[][] =  imageInit.getRGBArray(0.1, 5, 25, 32, 22);
-      int centerRGBArray[][] = imageInit.getRGBArray(0.1, 47, 25, 32, 22);
-      int rightRGBArray[][] = imageInit.getRGBArray(0.1, 89, 25, 32, 22);
+      int leftRGBArray[][] =  autoRobot.imageInit.getRGBArray(0.1, 5, 25, 32, 22);
+      int centerRGBArray[][] = autoRobot.imageInit.getRGBArray(0.1, 47, 25, 32, 22);
+      int rightRGBArray[][] = autoRobot.imageInit.getRGBArray(0.1, 89, 25, 32, 22);
 
       //Finds Average RGB Values (0-Darker -> 765-Lighter):
-      int leftStandardRGB[] = imageInit.getAverageRGBValues(leftRGBArray);
-      int centerStandardRGB[] = imageInit.getAverageRGBValues(centerRGBArray);
-      int rightStandardRGB[] = imageInit.getAverageRGBValues(rightRGBArray);
+      int leftStandardRGB[] = autoRobot.imageInit.getAverageRGBValues(leftRGBArray);
+      int centerStandardRGB[] = autoRobot.imageInit.getAverageRGBValues(centerRGBArray);
+      int rightStandardRGB[] = autoRobot.imageInit.getAverageRGBValues(rightRGBArray);
 
       int leftRGB = leftStandardRGB[0] + leftStandardRGB[1] + leftStandardRGB[2];
       int centerRGB = centerStandardRGB[0] + centerStandardRGB[1] + centerStandardRGB[2];
