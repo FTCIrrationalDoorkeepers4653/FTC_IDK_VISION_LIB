@@ -1,4 +1,4 @@
-package lib;
+package com.yamunasoftware.java.Tools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,207 +25,267 @@ public class Trainer {
   
   //Outlier Removal Function:
   public static void removeOutliers(Double trainData[], Double targetResultData[]) throws Exception {
-   if (trainData.length == targetResultData.length && trainData.length != 0 && targetResultData.length != 0) {	
-	Double fitnessVals[] = new Double[trainData.length];
-	Double sorted[] = new Double[trainData.length];
-	Double weights[] = new Double[trainData.length];
+    if (trainData.length == targetResultData.length && trainData.length != 0 && targetResultData.length != 0) {	
+	    Double fitnessVals[] = new Double[trainData.length];
+	    Double sorted[] = new Double[trainData.length];
+	    Double weights[] = new Double[trainData.length];
 	
-	int turns = 0;
-	int startTurns = trainData.length;
+	    int turns = 0;
+	    int startTurns = trainData.length;
 	
-	mainLoop: while (turns < startTurns) {
-	  double individualWeight = 0.0;
-	  individualWeight = ((targetResultData[turns]/trainData[turns]) + (trainData[turns]/targetResultData[turns])) * 
-	  (targetResultData[turns] + trainData[turns]);
+	    mainLoop: while (turns < startTurns) {
+	      double individualWeight = 0.0;
+	      individualWeight = ((targetResultData[turns]/trainData[turns]) + (trainData[turns]/targetResultData[turns])) * 
+	      (targetResultData[turns] + trainData[turns]);
 	  
-	  weights[turns] = individualWeight;
+	      weights[turns] = individualWeight;
 	  
-	  turns++;
-	}
+	      turns++;
+	    }
 	
-	sorted = copyArray(weights);
+	    sorted = copyArray(weights);
 	
-	Arrays.sort(sorted);
-	turns = 0;
+	    Arrays.sort(sorted);
+	    turns = 0;
 	
-	int half = startTurns/2;
-	int quarter = half/2;
-	int threeByFour = quarter*3;
+	    int half = startTurns/2;
+	    int quarter = half/2;
+	    int threeByFour = quarter*3;
 	 
-	double IQR, Q1, Q3, MEDIAN, differenceAmount, thresholdAbove, thresholdBelow;
+	    double IQR, Q1, Q3, MEDIAN, differenceAmount, thresholdAbove, thresholdBelow;
 	
-	if (trainData.length % 2 == 0.0) {
-	  MEDIAN = ((sorted[half] + sorted[(half)-1])/2.0);
-	  Q1 = ((sorted[quarter] + sorted[quarter-1])/2.0);
-	  Q3 = ((sorted[threeByFour] + sorted[threeByFour-1])/2.0);
-	  IQR = (Q3-Q1);
-	  differenceAmount = (IQR*1.5);
-	  thresholdAbove = (Q3+differenceAmount);
-	  thresholdBelow = (Q1-differenceAmount);
-	}
+	    if (trainData.length % 2 == 0.0) {
+	      MEDIAN = ((sorted[half] + sorted[(half)-1])/2.0);
+	      Q1 = ((sorted[quarter] + sorted[quarter-1])/2.0);
+	      Q3 = ((sorted[threeByFour] + sorted[threeByFour-1])/2.0);
+	      IQR = (Q3-Q1);
+	      differenceAmount = (IQR*1.5);
+	      thresholdAbove = (Q3+differenceAmount);
+	      thresholdBelow = (Q1-differenceAmount);
+	    }
 	
-	else {	
-	  MEDIAN = (sorted[half]);
-	  Q1 = (sorted[quarter]);
-	  Q3 = (sorted[threeByFour]);
-	  IQR = (Q3-Q1);
-	  differenceAmount = (IQR*1.5);
-	  thresholdAbove = (Q3+differenceAmount);
-	  thresholdBelow = (Q1-differenceAmount);
-	}
+	    else {	
+	      MEDIAN = (sorted[half]);
+	      Q1 = (sorted[quarter]);
+	      Q3 = (sorted[threeByFour]);
+	      IQR = (Q3-Q1);
+	      differenceAmount = (IQR*1.5);
+	      thresholdAbove = (Q3+differenceAmount);
+	      thresholdBelow = (Q1-differenceAmount);
+	    }
 	
-	secondLoop: while (turns < startTurns) {
-	  if (weights[turns] > thresholdAbove || weights[turns] < thresholdBelow) {
-	    fitnessVals[turns] = 0.0;  
-	  }
+	    secondLoop: while (turns < startTurns) {
+	      if (weights[turns] > thresholdAbove || weights[turns] < thresholdBelow) {
+	        fitnessVals[turns] = 0.0;  
+	      }
 			  
-	  else {
-    	fitnessVals[turns] = 1.0;  
-	  } 
+	      else {
+    	    fitnessVals[turns] = 1.0;  
+	      } 
 	 
-	  turns++;
-	}
+	      turns++;
+	    }
 	
-	turns = 0;
-	int checkTurns = turns;
+	    turns = 0;
+	    int checkTurns = turns;
 	
-	//Pre-Removal Debugs:
-	System.out.println(Arrays.deepToString(fitnessVals));
-	System.out.println(Arrays.deepToString(weights));
-	System.out.println(Arrays.deepToString(trainData));
-	System.out.println(Arrays.deepToString(targetResultData));
-	System.out.println("Begining Removal...");
+	    //Pre-Removal Debugs:
+	    System.out.println(Arrays.deepToString(fitnessVals));
+	    System.out.println(Arrays.deepToString(weights));
+	    System.out.println(Arrays.deepToString(trainData));
+	    System.out.println(Arrays.deepToString(targetResultData));
+	    System.out.println("Begining Removal...");
 	
-	thirdLoop: while (turns < startTurns) {
-	  if (fitnessVals[checkTurns] == 0.0) {
-		int removeTurns = turns+1;  
+	    thirdLoop: while (turns < startTurns) {
+	      if (fitnessVals[checkTurns] == 0.0) {
+		      int removeTurns = turns+1;  
 		  
-	    trainData = removeData(trainData, removeTurns);
-		targetResultData = removeData(targetResultData, removeTurns);
-		weights = removeData(weights, removeTurns);	
+	        trainData = removeData(trainData, removeTurns);
+		      targetResultData = removeData(targetResultData, removeTurns);
+		      weights = removeData(weights, removeTurns);	
 		
 		
-		turns--;
-		startTurns--;
-	  }	
+		      turns--;
+		      startTurns--;
+	      }	
 	  
-	  turns++;
-	  checkTurns++;
-	}
+	      turns++;
+	      checkTurns++;
+	    }
 	 
-	//Post-Removal Debugs:
-	System.out.println(Arrays.deepToString(fitnessVals));
-	System.out.println(Arrays.deepToString(weights));
-	System.out.println(Arrays.deepToString(trainData));
-	System.out.println(Arrays.deepToString(targetResultData));
-   }
+	    //Post-Removal Debugs:
+	    System.out.println(Arrays.deepToString(fitnessVals));
+	    System.out.println(Arrays.deepToString(weights));
+	    System.out.println(Arrays.deepToString(trainData));
+	    System.out.println(Arrays.deepToString(targetResultData));
+    }
    
-   else {
-	 System.err.println("Data Set Input Error!");   
-   }
+    else {
+	    System.err.println("Data Set Input Error!");   
+    }
   }
   
   //Box Value Equation Function:
-  public static void findBoxValues(Double trainData[], Double targetResultData[], String identifier) throws Exception {
-	//Checks for Data Set Errors:
-	if (trainData.length == targetResultData.length && trainData.length != 0 && targetResultData.length != 0) {
-	  //Arrays:	
-	  Double trainSorted[] = new Double[trainData.length];
-	  Double targetSorted[] = new Double[targetResultData.length];
+  public static double[][] findBoxValues(Double trainData[], Double targetResultData[], String identifier) throws Exception {
+	  //Main 2D Array:
+	  double allBoxValues[][] = new double[2][5];
+  	
+	  //Checks for Data Set Errors:
+	  if (trainData.length == targetResultData.length && trainData.length != 0 && targetResultData.length != 0) {
+	    //Arrays:	
+	    Double trainSorted[] = new Double[trainData.length];
+	    Double targetSorted[] = new Double[targetResultData.length];
 	  
-	  //Variables:
-	  int turns = 0;
-	  int startTurns = trainData.length;
+	    //Sets Sort Arrays Data:
+	    trainSorted = copyArray(trainData);
+	    targetSorted = copyArray(targetResultData);
 	  
-	  //Sets Sort Arrays Data:
-	  trainSorted = copyArray(trainData);
-	  targetSorted = copyArray(targetResultData);
+	    //Sorts Arrays:
+	    Arrays.sort(trainSorted);
+	    Arrays.sort(targetSorted);
 	  
-	  //Sorts Arrays:
-	  Arrays.sort(trainSorted);
-	  Arrays.sort(targetSorted);
+	    //Box Variables:
+	    double maxX, minX, maxY, minY;
 	  
-	  //Box Variables:
-	  double maxX, minX, maxY, minY;
+	    //Top Left:
+	    double[] TL = new double[2];
+	    //Bottom Left:
+	    double[] BL = new double [2];
+	    //Top Right:
+	    double[] TR = new double[2];
+	    //Bottom Right
+	    double[] BR = new double[2]; 
+	    //Midpoint:
+	    double[] M = new double[2];
 	  
-	  //Top Left:
-	  double[] TL = new double[2];
-	  //Bottom Left:
-	  double[] BL = new double [2];
-	  //Top Right:
-	  double[] TR = new double[2];
-	  //Bottom Right
-	  double[] BR = new double[2]; 
-	  //Midpoint:
-	  double[] M = new double[2];
+	    //Setting Maxs and Mins:
+	    maxX = trainSorted[trainSorted.length-1]; //Sets Maximum X 
+	    minX = trainSorted[0]; //Minimum X
 	  
-	  //Setting Maxs and Mins:
-	  maxX = trainSorted[trainSorted.length-1]; //Sets Maximum X 
-	  minX = trainSorted[0]; //Minimum X
+	    maxY = targetSorted[targetSorted.length-1]; //Sets Maximum Y
+	    minY = targetSorted[0]; //Sets Minimum Y
 	  
-	  maxY = targetSorted[targetSorted.length-1]; //Sets Maximum Y
-	  minY = targetSorted[0]; //Sets Minimum Y
+	    //Setting Box Values:
+	    TL[0] = minX; //Top Left X
+	    TL [1] = maxY; //Top Left Y
 	  
-	  //Setting Box Values:
-	  TL[0] = minX; //Top Left X
-	  TL [1] = maxY; //Top Left Y
+	    BL[0] = minX; //Bottom Left X
+	    BL [1] = minY; //Bottom Left Y
 	  
-	  BL[0] = minX; //Bottom Left X
-	  BL [1] = minY; //Bottom Left Y
+	    TR[0] = maxX; //Top Right X
+	    TR [1] = maxY; //Top Right Y
 	  
-	  TR[0] = maxX; //Top Right X
-	  TR [1] = maxY; //Top Right Y
+	    BR[0] = maxX; //Bottom Right X
+	    BR[1] = minY; //Bottom Right Y
 	  
-	  BR[0] = maxX; //Bottom Right X
-	  BR[1] = minY; //Bottom Right Y
+	    M = getMidpoint(trainData, targetResultData); //Midpoint X and Y 
 	  
-	  M[0] = (maxX + minX)/2.0; //Midpoint X
-	  M[1] = (maxY + minY)/2.0; //Midpoint Y
+	    //Saves the Data (as a model):
+	    HandleData.saveData(identifier + "tlX.txt", TL[0]); //TL X
+	    HandleData.saveData(identifier + "tlY.txt", TL[1]); //TL Y
 	  
-	  //Saves the Data (as a model):
-	  HandleData.saveData(identifier + "tlX.txt", TL[0]); //TL X
-	  HandleData.saveData(identifier + "tlY.txt", TL[1]); //TL Y
+	    HandleData.saveData(identifier + "blX.txt", BL[0]); //BL X
+	    HandleData.saveData(identifier + "blY.txt", BL[1]); //BL Y
 	  
-	  HandleData.saveData(identifier + "blX.txt", BL[0]); //BL X
-	  HandleData.saveData(identifier + "blY.txt", BL[1]); //BL Y
+	    HandleData.saveData(identifier + "trX.txt", TR[0]); //TR X
+	    HandleData.saveData(identifier + "trY.txt", TR[1]); //TR Y
 	  
-	  HandleData.saveData(identifier + "trX.txt", TR[0]); //TR X
-	  HandleData.saveData(identifier + "trY.txt", TR[1]); //TR Y
+	    HandleData.saveData(identifier + "brX.txt", BR[0]); //BR X
+	    HandleData.saveData(identifier + "brY.txt", BR[1]); //BR Y
 	  
-	  HandleData.saveData(identifier + "brX.txt", BR[0]); //BR X
-	  HandleData.saveData(identifier + "brY.txt", BR[1]); //BR Y
+	    HandleData.saveData(identifier + "mX.txt", M[0]); //M X
+	    HandleData.saveData(identifier + "mY.txt", M[1]); //M Y
 	  
-	  HandleData.saveData(identifier + "mX.txt", M[0]); //M X
-	  HandleData.saveData(identifier + "mY.txt", M[1]); //M Y
-	  
-	  //Value Debugs:
-	  System.out.println("TL: " + Arrays.toString(TL));
-	  System.out.println("BL: " + Arrays.toString(BL));
-	  System.out.println("TR: " + Arrays.toString(TR));
-	  System.out.println("BR: " + Arrays.toString(BR));
-	  System.out.println("M: " + Arrays.toString(M));
-	}  
+	    //Value Debugs:
+	    System.out.println("TL: " + Arrays.toString(TL));
+	    System.out.println("BL: " + Arrays.toString(BL));
+	    System.out.println("TR: " + Arrays.toString(TR));
+	    System.out.println("BR: " + Arrays.toString(BR));
+	    System.out.println("M: " + Arrays.toString(M));
+	    
+	    //Sets the Array Values (TL, BL, TR, BR, M):
+	    
+	    //TL Values:
+	    allBoxValues[0][0] = TL[0];
+	    allBoxValues[1][0] = TL[1];
+	    
+	    //BL Values:
+	    allBoxValues[0][1] = BL[0];
+	    allBoxValues[1][1] = BL[1];
+	    
+	    //TR Values:
+	    allBoxValues[0][2] = TR[0];
+	    allBoxValues[1][2] = TR[1];
+	    
+	    //BR Values:
+	    allBoxValues[0][3] = BR[0];
+	    allBoxValues[1][3] = BR[1];
+	    
+	    //M Values:
+	    allBoxValues[0][4] = M[0];
+	    allBoxValues[1][4] = M[1];
+	  }  
 	
-	else {
-	  System.err.println("Data Set Input Error!");   
+	  else {
+	    System.err.println("Data Set Input Error!");   
     }
+	  
+	  //Returns 2D Array:
+	  return allBoxValues;
+  }
+  
+  //Calculates the Correct Midpoint:
+  public static double[] getMidpoint(Double trainData[], Double targetResultData[]) throws Exception {
+    //Main Array:
+	  double midPointValues[] = new double[2];
+  	
+    //Checks for Data Set Errors:
+    if (trainData.length == targetResultData.length && trainData.length != 0 && targetResultData.length != 0) {
+  	
+  	  //Loop Values:
+  	  int startTurns = trainData.length;
+  	  int turns = 0;
+  	  double trainAvg = 0.0, targetAvg = 0.0;
+  	
+  	  mainLoop: while (turns < startTurns) {
+  	  	trainAvg += trainData[turns];
+  	  	targetAvg += targetResultData[turns];
+  	  	
+  	  	turns++;
+  	  }
+  	  
+  	  //Computes Average:
+  	  trainAvg /= startTurns;
+  	  targetAvg /= startTurns;
+  	  
+  	  //Adds To Array:
+  	  midPointValues[0] = trainAvg;
+  	  midPointValues[1] = targetAvg;
+    }
+    
+    else {
+    	System.err.println("Data Set Input Error!");	
+    }
+
+	  //Returns The Value:
+	  return midPointValues;
   }
   
   //Calculates the Confidence:
   public static double calculateDistValue(double dataX, double dataY, String identifier) throws Exception {
-	//Confidence Variable:
-	double confidence;
+	  //Confidence Variable:
+	  double confidence;
 	
-	/* 
-	 * DistValue is calculated by finding the distance of the data point to the 
-	 * midpoint of the box in relation to the closest landmark.
-	 * 
-	 */
+	  /* 
+	   * DistValue is calculated by finding the distance of the data point to the 
+	   * midpoint of the box in relation to the closest landmark.
+	   * 
+	   */
 	
-	//Box Variables:
-	//Top Left:
-	double[] TL = new double[2];
-	//Bottom Left:
+	  //Box Variables:
+	  //Top Left:
+	  double[] TL = new double[2];
+	  //Bottom Left:
     double[] BL = new double [2];
     //Top Right:
     double[] TR = new double[2];
@@ -235,48 +295,48 @@ public class Trainer {
     double[] M = new double[2];
     
     //Opens the Data:
-	TL[0] = HandleData.openData(identifier + "tlX.txt"); //TL X
-	TL[1] = HandleData.openData(identifier + "tlY.txt"); //TL Y
+	  TL[0] = HandleData.openData(identifier + "tlX.txt"); //TL X
+	  TL[1] = HandleData.openData(identifier + "tlY.txt"); //TL Y
 	
-	BL[0] = HandleData.openData(identifier + "blX.txt"); //BL X
-	BL[1] = HandleData.openData(identifier + "blY.txt"); //BL Y
+	  BL[0] = HandleData.openData(identifier + "blX.txt"); //BL X
+	  BL[1] = HandleData.openData(identifier + "blY.txt"); //BL Y
 	
-	TR[0] = HandleData.openData(identifier + "trX.txt"); //TR X
-	TR[1] = HandleData.openData(identifier + "trY.txt"); //TR Y
+	  TR[0] = HandleData.openData(identifier + "trX.txt"); //TR X
+	  TR[1] = HandleData.openData(identifier + "trY.txt"); //TR Y
 	
-	BR[0] = HandleData.openData(identifier + "brX.txt"); //BR X
-	BR[1] = HandleData.openData(identifier + "brY.txt"); //BR Y
+	  BR[0] = HandleData.openData(identifier + "brX.txt"); //BR X
+	  BR[1] = HandleData.openData(identifier + "brY.txt"); //BR Y
 	
-	M[0] = HandleData.openData(identifier + "mX.txt"); //M X
-	M[1] = HandleData.openData(identifier + "mY.txt"); //M Y
+	  M[0] = HandleData.openData(identifier + "mX.txt"); //M X
+	  M[1] = HandleData.openData(identifier + "mY.txt"); //M Y
 	
-	//Finds the Distance to the Landmarks:
-	double distanceToTL, distanceToBL, distanceToTR, distanceToBR, distanceToM, avgDistance;
-	double[] allDistances = new double[4];
+	  //Finds the Distance to the Landmarks:
+	  double distanceToTL, distanceToBL, distanceToTR, distanceToBR, distanceToM, avgDistance;
+	  double[] allDistances = new double[4];
 	
-	distanceToTL = Math.sqrt( ((Math.abs(dataY-TL[1]))*(Math.abs(dataY-TL[1]))) + ((Math.abs(dataX-TL[0]))*(Math.abs(dataX-TL[0]))) ); //TL
-	distanceToBL = Math.sqrt( ((Math.abs(dataY-BL[1]))*(Math.abs(dataY-BL[1]))) + ((Math.abs(dataX-BL[0]))*(Math.abs(dataX-BL[0]))) ); //BL
-	distanceToTR = Math.sqrt( ((Math.abs(dataY-TR[1]))*(Math.abs(dataY-TR[1]))) + ((Math.abs(dataX-TR[0]))*(Math.abs(dataX-TR[0]))) ); //TR
-	distanceToBR = Math.sqrt( ((Math.abs(dataY-BR[1]))*(Math.abs(dataY-BR[1]))) + ((Math.abs(dataX-BR[0]))*(Math.abs(dataX-BR[0]))) ); //BR
-	distanceToM = Math.sqrt( ((Math.abs(dataY-M[1]))*(Math.abs(dataY-M[1]))) + ((Math.abs(dataX-M[0]))*(Math.abs(dataX-M[0]))) ); //M
+	  distanceToTL = Math.sqrt( ((Math.abs(dataY-TL[1]))*(Math.abs(dataY-TL[1]))) + ((Math.abs(dataX-TL[0]))*(Math.abs(dataX-TL[0]))) ); //TL
+	  distanceToBL = Math.sqrt( ((Math.abs(dataY-BL[1]))*(Math.abs(dataY-BL[1]))) + ((Math.abs(dataX-BL[0]))*(Math.abs(dataX-BL[0]))) ); //BL
+	  distanceToTR = Math.sqrt( ((Math.abs(dataY-TR[1]))*(Math.abs(dataY-TR[1]))) + ((Math.abs(dataX-TR[0]))*(Math.abs(dataX-TR[0]))) ); //TR
+	  distanceToBR = Math.sqrt( ((Math.abs(dataY-BR[1]))*(Math.abs(dataY-BR[1]))) + ((Math.abs(dataX-BR[0]))*(Math.abs(dataX-BR[0]))) ); //BR
+	  distanceToM = Math.sqrt( ((Math.abs(dataY-M[1]))*(Math.abs(dataY-M[1]))) + ((Math.abs(dataX-M[0]))*(Math.abs(dataX-M[0]))) ); //M
 	
-	//Adds Distances to Array and Sorts:
-	allDistances[0] = distanceToTL;
-	allDistances[1] = distanceToBL;
-	allDistances[2] = distanceToTR;
-	allDistances[3] = distanceToBR;
+	  //Adds Distances to Array and Sorts:
+	  allDistances[0] = distanceToTL;
+	  allDistances[1] = distanceToBL;
+	  allDistances[2] = distanceToTR;
+	  allDistances[3] = distanceToBR;
 	
-	Arrays.sort(allDistances);
+	  Arrays.sort(allDistances);
 	
-	//Sets Nearest Landmark Distance:
-	avgDistance = (allDistances[0]+allDistances[1]+allDistances[2]+allDistances[3])/4.0;
+	  //Sets Nearest Landmark Distance:
+	  avgDistance = (allDistances[0]+allDistances[1]+allDistances[2]+allDistances[3])/4.0;
 	
-	//Calculates Confidence:
-	confidence = (distanceToM+avgDistance); //Returns Dist Value
-	System.out.println("DistValue: " + confidence); //Dist Val Debug
+	  //Calculates Confidence:
+	  confidence = (distanceToM+avgDistance); //Returns Dist Value
+	  System.out.println("DistValue: " + confidence); //Dist Val Debug
 	
-	//Returns Value:
-	return confidence;  
+	  //Returns Value:
+	  return confidence;  
   }
   
   //API USER: Use method to populate arrays!
