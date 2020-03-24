@@ -34,29 +34,26 @@ public class Analyze extends Capture {
 	 * Black: 0, 0, 0
 	 * 
 	*/
-	
-	//Sets Detector RGB:
-	public static void setDetectorRGB(int red, int green, int blue) throws Exception {
+
+	//Initializes Detector:
+	public static void initDetector(String localDetectorName, int red, int green, int blue) throws Exception {
+		//Sets the Detector Name:
+		detectorName = localDetectorName; //Used for Debugging
+
 		//Checks Case:
 		if (red <= 255 && red >= 0 && green <= 255 && green >= 0 && blue <= 255 && blue >= 0) {
 			//Setting the Detector Values:
-		  detectorRed = red;
-		  detectorGreen = green;
-		  detectorBlue = blue;
+			detectorRed = red;
+			detectorGreen = green;
+			detectorBlue = blue;
 		}
-		
+
 		else {
-		  //Setting the Detector Values (Default):
-		  detectorRed = 0;
-		  detectorGreen = 0;
-		  detectorBlue = 0;	
+			//Setting the Detector Values (Default):
+			detectorRed = 0;
+			detectorGreen = 0;
+			detectorBlue = 0;
 		}
-	}
-	
-	//Sets the Detector Name:
-	public static void setDetectorName(String localDetectorName) throws Exception {
-		//Sets the Detector Name:
-		detectorName = localDetectorName; //Used for Debugging
 	}
 	
 	//Prints Detector Settings:
