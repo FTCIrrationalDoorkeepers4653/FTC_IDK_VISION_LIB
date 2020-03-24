@@ -58,8 +58,7 @@ public class VuforiaImageInit extends Analyze {
 
       /* INITS the Custom Detector */
       try {
-          setDetectorRGB(detectorRGBArray[0], detectorRGBArray[1], detectorRGBArray[2]);
-          setDetectorName(detectorName);
+          initDetector(detectorName, detectorRGBArray[0], detectorRGBArray[1], detectorRGBArray[2]);
       }
 
       catch (Exception e) {
