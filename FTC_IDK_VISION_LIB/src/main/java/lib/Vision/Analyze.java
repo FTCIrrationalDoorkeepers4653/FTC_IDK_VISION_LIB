@@ -28,9 +28,7 @@ public class Analyze extends Capture {
 
 	/* 
 	 * PRESET DETECTOR VALUES:
-	 * 
-	 * Cardboard: 169, 120, 53
-	 * Indicator Sticker: 255, 0, 0
+	 *
 	 * Black: 0, 0, 0
 	 * 
 	*/
