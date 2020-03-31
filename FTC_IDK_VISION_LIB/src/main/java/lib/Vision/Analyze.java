@@ -284,8 +284,8 @@ public class Analyze extends Capture {
 		return averageRGB;
 	}
 
-	//Cardboard Box Detector:
-	public static int[][] boxDetector(int[][] rgbValues, int lightingMargin) throws Exception {
+	//Binary Detector (Converts to Zeros and Ones):
+	public static int[][] binaryDetector(int[][] rgbValues, int[] lightingMargin) throws Exception {
 		//Box Values Array:
 		int boxValuesArray[][] = new int[rgbValues.length][rgbValues[0].length];
 		int setRGBValues[] = new int[3];
@@ -297,9 +297,6 @@ public class Analyze extends Capture {
 
 		//System Debugs:
 		//System.out.println(Arrays.toString(setRGBValues));
-
-		//Margin of Error Value:
-		int margin = lightingMargin; //Used for Different Lighting Conditions (Customizable)
 
 		//Checks the Case:
 		if (rgbValues.length != 0 && rgbValues[0].length != 0) {
@@ -336,7 +333,7 @@ public class Analyze extends Capture {
 					//System Debugs:
 					//System.out.println(testRG + ", " + testRB + ", " + testGB);
 
-					if (Math.abs(redDif) <= margin && Math.abs(greenDif) <= margin && Math.abs(blueDif) <= margin &&
+					if (Math.abs(redDif) <= lightingMargin[0] && Math.abs(greenDif) <= lightingMargin[1] && Math.abs(blueDif) <= lightingMargin[2] &&
 							testRG >= 0 && testRB >= 0 && testGB >= 0) {
 						boxValuesArray[turnsWidth][turnsHeight] = 1;
 					}
@@ -369,59 +366,59 @@ public class Analyze extends Capture {
 	 * Loop until first instance... 
 	 * Find Neighbors in 2D, Loop until neighbors ends...
 	 * Get Data and test using ML...
-	 * CLassify...Repeat
+	 * Classify...Repeat
 	 * 
 	*/
-	
+
 	//Gets Body Values (IF PRESENT):
-	public static int[][] getBodyValues(int detectionArray[][]) throws Exception {
+	public static int[][] getBodyValues(int[][] detectionArray) throws Exception {
 		//Body Value Array:
 		int bodyValues[][] = new int[2][4];
-		
+
 		//Returns Array:
 		return bodyValues;
 	}
-	
+
 	//Get Selected Area Boolean (IF PRESENT):
-	public static boolean getBodyBoolean(int detectionArray[][], int pixelCount) throws Exception {
+	public static boolean getBodyBoolean(int[][] detectionArray, int pixelCount) throws Exception {
 		//Main Value:
 		boolean valuePresent = false; //Default Value
-		
-	  //Loop Variables:
+
+		//Loop Variables:
 		int turnsWidth = 0;
 		int trueCount = 0;
-		
+
 		//Count Value (Helps Mitigate Stray Pixels):
 		int countValue = pixelCount; //Default Number of Pixels counted true before classifying (Customizable)
-		
-		  //Loops Through Area for Confirmation:
-		  mainLoop: while (turnsWidth < detectionArray.length) {
-		  	//Loop Variable:
-		  	int turnsHeight = 0;
-			  secondLoop: while (turnsHeight < detectionArray[turnsWidth].length) {
-			  	//Checks the Case:
-				  if (detectionArray[turnsWidth][turnsHeight] == 1) {
-				    //System Debugs:
-				  	//System.out.println("(" + turnsWidth + ", " + turnsHeight + ")");
-				  	
-				  	//Adds to the TRUE pixels:
-				  	trueCount++;
-				  	
-				  	if (trueCount >= countValue) {
-					    valuePresent = true;
-					    break mainLoop;
-				  	}
-				  }
-				
-				  turnsHeight++;
-			  }
-		
-	      //System Debugs:
-  	    //System.out.println(turnsWidth + ", " + turnsHeight);
-  	    
-		    turnsWidth++;
-		  }
-		
+
+		//Loops Through Area for Confirmation:
+		mainLoop: while (turnsWidth < detectionArray.length) {
+			//Loop Variable:
+			int turnsHeight = 0;
+			secondLoop: while (turnsHeight < detectionArray[turnsWidth].length) {
+				//Checks the Case:
+				if (detectionArray[turnsWidth][turnsHeight] == 1) {
+					//System Debugs:
+					//System.out.println("(" + turnsWidth + ", " + turnsHeight + ")");
+
+					//Adds to the TRUE pixels:
+					trueCount++;
+
+					if (trueCount >= countValue) {
+						valuePresent = true;
+						break mainLoop;
+					}
+				}
+
+				turnsHeight++;
+			}
+
+			//System Debugs:
+			//System.out.println(turnsWidth + ", " + turnsHeight);
+
+			turnsWidth++;
+		}
+
 		//Returns Value:
 		return valuePresent;
 	}
