@@ -23,14 +23,26 @@ To see how it works visit Slide 7: https://docs.google.com/presentation/d/15Jl5z
   
 Sample Pipeline:
   ```Java
-  public boolean sampleLeftPipeline() {
-    //Gets RGB Array For Analysis-PARAMS: (Resize Ratio, startX, startY, width of area to analyze, height of area to analyze)
-    int leftRGBArray[][] = imageInit.getRGBArray(0.1, 12, 20, 40, 32);
+  
+    public boolean[] samplePipeline(int[] lightingMarginArray) {
+      //Pipeline Array:
+      boolean pipelineArray[] = new boolean[2];
     
-    //Analyzes Selected Portion of Image (using RGB above)-PARAMS: (rgbValues 2D Array, pixelMargin for lighting, number of pixels  counted before classified)
-    boolean foundLeft = imageInit.detectObject(leftRGBArray, 25, 10);
+      //Getting BitMap Image:
+      Bitmap objectImage = imageInit.getImage(0.1);
 
-    //Returning the Value:
-    return foundLeft;
-  }
+      //Left Setting:
+      int leftRGBArray[][] = VuforiaImageInit.getRGBArray(objectImage, 12, 20, 20, 16);
+      boolean foundLeft = VuforiaImageInit.detectObject(leftRGBArray, lightingMarginArray, 20);
+      pipelineArray[0] = foundLeft;
+      
+      //Right Setting:
+      int rightRGBArray[][] = VuforiaImageInit.getRGBArray(objectImage, 62, 20, 20, 16);
+      boolean foundRight = VuforiaImageInit.detectObject(rightRGBArray, lightingMarginArray, 20);
+      pipelineArray[1] = foundRight;
+      
+      //Returns Boolean Array:
+      return pipelineArray;
+    }
+
   ```
