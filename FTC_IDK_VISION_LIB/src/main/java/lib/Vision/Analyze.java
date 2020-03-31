@@ -1,26 +1,18 @@
 package lib.Vision;
 
-//import com.yamunasoftware.java.Tools.*;
-
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
-
 import lib.UILA.Neuron;
-
-//import com.yamunasoftware.java.Main.*;
 
 public class Analyze extends Capture {
 	//Objects:
 	private static Neuron neuron = new Neuron();
-	
+
 	//Detector Settings (Public Settings):
 	private static int detectorRed, detectorGreen, detectorBlue;
 	private static String detectorName;
 	
 	/* CONSTRUCTOR AND SET METHODS!!! */
-	public Analyze() {
-		super();
-	}
+	public Analyze() { super(); }
 
 	/* 
 	 * PRESET DETECTOR VALUES:
@@ -59,179 +51,7 @@ public class Analyze extends Capture {
 		System.out.println(detectorName + " with RGB Settings of: " + Arrays.toString(localRGBSettingsArray));
 	}
 	
-	/* BUFFERED IMAGE PROCESSING METHODS */
-	
-	//Resizes the Buffered Image Using the Aspect Ratio:
-	public static BufferedImage resizeBufferedImageRatio(BufferedImage userImage, Double resizeRatio) throws Exception {
-		if (resizeRatio != 0.0) {
-			//Gets the Image Width and Height using the Methods:
-			double width = getBufferedWidth(userImage);
-			double height = getBufferedHeight(userImage);
-
-			//Calculates the new Width and Height:
-			int newWidth = Math.abs((int) (width*resizeRatio));
-			int newHeight = Math.abs((int) (height*resizeRatio));
-
-			//Resizes the Buffered Image:
-			BufferedImage newImage = resizeLocalImage(userImage, newWidth, newHeight);
-
-			//System Debugs:
-			//System.out.println(userImage.getWidth() + ", " + userImage.getHeight());
-
-			//Returns the Image:
-			return newImage;
-		}
-
-		else {
-			//Error Statement:
-			System.out.println("Invalid Resize Ratio!");
-			return null;
-		}
-	}
-	
-	//Finds all RGB Values for Selected Area of User Buffered Image:
-	public static int[][] findSelectedBufferedRGB(BufferedImage userImage, int startX, int startY, int width, int height) throws Exception {
-		//Main Arrays:
-		int zeroArray[][] = {{0}}; //Incorrect Enterance Array
-		
-		//Checks Case:
-		if (userImage != null) {
-		  //Array Values:
-			int imageWidth = Capture.getBufferedWidth(userImage);
-			int imageHeight = Capture.getBufferedHeight(userImage);
-			int allValueList[][] = new int[width][height];
-			
-		  //Loop Values:
-			int turnsWidth = startX;
-			
-			//Checks the Case:
-	    if (startX >= 0 && startX+width <= imageWidth && startY >= 0 && startY+height <= imageHeight) {
-			  //Loops through and Finds All Values:
-			  mainLoop: while (turnsWidth < startX+width) {
-			    //Loop Variable:
-				  int turnsHeight = startY;
-				  secondLoop: while (turnsHeight < startY+height) {
-					  allValueList[turnsWidth-startX][turnsHeight-startY] = Capture.getBufferedRGB(userImage, turnsWidth, turnsHeight);
-					
-					  turnsHeight++;
-				  }
-
-				  turnsWidth++;
-			  }
-	    
-			  //Returns Array:
-			  return allValueList;
-	    }
-	    
-	    else {
-	    	System.out.println("Selected Area is not Possible!");
-	    	
-	    	//Returns False Array:
-	    	return zeroArray;
-	    }
-		}
-		
-		else {
-			//Error Message:
-			System.out.println("Null Buffered Image Detected!");
-			return zeroArray;
-		}
-	}
-
-	/* IMAGE PROCESSING METHODS */
-
-	//Resizes the Image Using the Aspect Ratio:
-	public static String resizeImageRatio(String imageIdentifier, Double resizeRatio, String resizeIdentifier) throws Exception {
-		if (resizeRatio != 0.0) {
-			//Image Variables:
-			double imageWidth = getWidth(imageIdentifier);
-			double imageHeight = getHeight(imageIdentifier);
-
-			//Makes the Conversions:
-			double resizedWidth = Math.abs((imageWidth*resizeRatio));
-			double resizedHeight = Math.abs((imageHeight*resizeRatio));
-
-			//Resizes the Image:
-			String id = resizeImage(imageIdentifier, (int)resizedWidth, (int)resizedHeight, resizeIdentifier);
-
-			//Returns the Value:
-			return id;
-		}
-
-		else {
-			//Error Statement:
-			System.out.println("Incorrect Resize Ratio!");
-			return null;
-		}
-	}
-	
 	/* COLOR ANALYSIS METHODS!!! */
-
-	//Finds all RGB Values:
-	public static int[][] findAllRGB(String imageIdentifier) throws Exception {
-		//Array Values:
-		int imageWidth = Capture.getWidth(imageIdentifier);
-		int imageHeight = Capture.getHeight(imageIdentifier);
-		int allValueList[][] = new int[imageWidth][imageHeight];
-
-		//Loop Values:
-		int turnsWidth = 0;
-
-		//Loops through and Finds All Values:
-		mainLoop: while (turnsWidth < allValueList.length) {
-			//Loop Variable:
-			int turnsHeight = 0;
-			secondLoop: while (turnsHeight < allValueList[turnsWidth].length) {
-				allValueList[turnsWidth][turnsHeight] = Capture.getRGB(imageIdentifier, turnsWidth, turnsHeight);
-				turnsHeight++;
-			}
-
-			turnsWidth++;
-		}
-
-		//Returns Array:
-		return allValueList;
-	}
-	
-	//Finds Only Selected Area of RGB:
-	public static int[][] findSelectedRGB(String imageIdentifier, int startX, int startY, int width, int height) throws Exception {
-		//Check Variables:
-		int imageWidth = Capture.getWidth(imageIdentifier);
-		int imageHeight = Capture.getHeight(imageIdentifier);
-		
-		//Main Arrays:
-		int allValueList[][] = new int[width][height];
-		int zeroArray[][] = {{0}}; //Incorrect Enterance Array
-		
-	  //Loop Values:
-		int turnsWidth = startX;
-		
-		//Checks the Case:
-    if (startX >= 0 && startX+width <= imageWidth && startY >= 0 && startY+height <= imageHeight) {
-		  //Loops through and Finds All Values:
-		  mainLoop: while (turnsWidth < startX+width) {
-		    //Loop Variable:
-			  int turnsHeight = startY;
-			  secondLoop: while (turnsHeight < startY+height) {
-				  allValueList[turnsWidth-startX][turnsHeight-startY] = Capture.getRGB(imageIdentifier, turnsWidth, turnsHeight);
-				
-				  turnsHeight++;
-			  }
-
-			  turnsWidth++;
-		  }
-    
-		  //Returns Array:
-		  return allValueList;
-    }
-    
-    else {
-    	System.out.println("Selected Area is not Possible!");
-    	
-    	//Returns False Array:
-    	return zeroArray;
-    }
-	}
 
 	/* ENTERANCE DEBUGS ADDED FOR NEXT TWO METHODS DUE TO USE CASES!!! */
 
@@ -503,7 +323,7 @@ public class Analyze extends Capture {
 		boolean boxClass = false; //Default Value
 
 		//Classifies Box:
-		boxClass = Neuron.getClass((double) width, (double) height, modelIdentifier);
+		boxClass = neuron.getClass((double) width, (double) height, modelIdentifier);
 
 		return boxClass;
 	}
@@ -512,9 +332,9 @@ public class Analyze extends Capture {
 	   METHOD OF TRAINING TO BE DONE IN MAIN APPLICATION JAVA FILE (BACKEND)
 	  
 	   Removes Outliers First:
-		 Trainer.removeOutliers(trainingDataX, trainingDataY);
+	   Trainer.removeOutliers(trainingDataX, trainingDataY);
 		
-		 Trains Data:
-		 Trainer.findBoxValues(trainingDataX, trainingDataY, modelIdentifier); 
+	   Trains Data:
+	   Trainer.findBoxValues(trainingDataX, trainingDataY, modelIdentifier);
 	*/
 }
