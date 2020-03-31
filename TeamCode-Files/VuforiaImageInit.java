@@ -24,7 +24,7 @@ public class VuforiaImageInit extends Analyze {
     //Vuforia Elements:
     VuforiaLocalizer vuforia;
     private static final String VUFORIA_KEY =
-            "---YOUR VUFORIA KEY---";
+            "AR7KPuz/////AAABmSKvAg58mkBSqvvfxvaYqxMN8S2CvbOIzcpLyLVqb9hLPXQf3hPCERtF9azaj5sBUezFRBqdVA53ZAsNmlWW/ThqkaHtmpKNqXneP6p8VhN4liG3ofA7Cidx234PKNIhalLvby0jdmuxT5Uhh4dJjST6taoZGArAQz7Df8hzPG26Nd92L1ATW3mO4qzNAny2UK5YrzG92bUIxqvpDLkjeq8UNTLHYD4ulI1i+Jl/dPzU2PdeNPEqlsykdshGvcuRWRz8qeMXfpKVZ9TXmLxqvuTe6K291gxuKtfWXJ11rYJHTJlUAvooMpPaAh2/isv6LUy83+3UhIyl1kNxaNeMHK52iqEjpswOiOmVkniWTblp";
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
 
   /* Constructor */
@@ -53,7 +53,7 @@ public class VuforiaImageInit extends Analyze {
       vuforia = ClassFactory.getInstance().createVuforia(parameters);
       Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
 
-      //Turns on the Flash for Detection:
+      //Flash for Detection:
       com.vuforia.CameraDevice.getInstance().setFlashTorchMode(flash);
 
       /* INITS the Custom Detector */
@@ -123,60 +123,71 @@ public class VuforiaImageInit extends Analyze {
   }
 
   //Vuforia Capture Image Method:
-    public int[][] getRGBArray(Double resizedRatio, int startX, int startY, int width, int height) {
-      //PARAMS: RESIZED RATIO CANNOT BE ZERO, THE STARTX AND STARTY + THE WIDTH AND HEIGHT MUST BE LESS THAN OR EQUAL TO IMAGE WIDTH AND HEIGHT (Usually Starts at 1280x720)!!!
-        Image rgbImage;
-        Bitmap bitmapImage;
-        int rgbValues[][] = new int[width][height];
+  public Bitmap getImage(double resizedRatio) {
+    //PARAMS: Resized Ratio cannot be Zero!!!
+    Image rgbImage;
+    Bitmap bitmapImage = null;
 
-        //Converts Frame to BitMa of RGB Format:
-        try {
-            VuforiaLocalizer.CloseableFrame frame = vuforia.getFrameQueue().take();
-            long numImages = frame.getNumImages();
+    //Converts Frame to BitMap of RGB Format:
+    try {
+        VuforiaLocalizer.CloseableFrame frame = vuforia.getFrameQueue().take();
+        long numImages = frame.getNumImages();
 
-            formatLoop: for (int i = 0; i < numImages; i++) {
-                if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
-                    //Creates Bitmap Image:
-                    rgbImage = frame.getImage(i);
-                    bitmapImage = Bitmap.createBitmap(rgbImage.getWidth(), rgbImage.getHeight(), Bitmap.Config.RGB_565);
-                    bitmapImage.copyPixelsFromBuffer(rgbImage.getPixels());
+        formatLoop:
+        for (int i = 0; i < numImages; i++) {
+            if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
+                //Creates Bitmap Image:
+                rgbImage = frame.getImage(i);
+                bitmapImage = Bitmap.createBitmap(rgbImage.getWidth(), rgbImage.getHeight(), Bitmap.Config.RGB_565);
+                bitmapImage.copyPixelsFromBuffer(rgbImage.getPixels());
 
-                    //Gets Values for Bitmap Resizing:
-                    double currentWidth = bitmapImage.getWidth();
-                    double currentHeight = bitmapImage.getHeight();
+                //Gets Values for Bitmap Resizing:
+                double currentWidth = bitmapImage.getWidth();
+                double currentHeight = bitmapImage.getHeight();
 
-                    int newWidth = (int)(currentWidth*resizedRatio);
-                    int newHeight = (int)(currentHeight*resizedRatio);
+                int newWidth = (int) (currentWidth * resizedRatio);
+                int newHeight = (int) (currentHeight * resizedRatio);
 
-                    //Resizing Bitmap:
-                    bitmapImage = getResizedBitmap(bitmapImage, newWidth, newHeight);
+                //Resizing Bitmap:
+                bitmapImage = getResizedBitmap(bitmapImage, newWidth, newHeight);
 
-                    //Gets RGB Values Array from Bitmap:
-                    int turnsWidth = startX;
-
-                    while (turnsWidth < width+startX) {
-                        int turnsHeight = startY;
-                        while (startY < height+startY) {
-                            rgbValues[turnsWidth-startX][turnsHeight-startY] = bitmapImage.getPixel(turnsWidth, turnsHeight);
-
-                            turnsHeight++;
-                        }
-
-                        turnsWidth++;
-                    }
-
-                    //Breaks the for loop:
-                    break formatLoop;
-                }
+                break formatLoop;
             }
         }
+    }
 
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
 
-        //Returns the Obtained RGB Array:
-        return rgbValues;
+    //Returns Image:
+    return bitmapImage;
+  }
+
+    //Gets the Array of RGB Values from an Image:
+    public int[][] getRGBArray(Bitmap image, int startX, int startY, int width, int height) {
+      //PARAMS: THE STARTX AND STARTY + THE WIDTH AND HEIGHT MUST BE LESS THAN OR EQUAL TO IMAGE WIDTH AND HEIGHT (Usually Starts at 1280x720)!!!
+      int[][] rgbValues = new int[width][height];
+
+      if (image != null) {
+          //Gets RGB Values Array from Bitmap:
+          int turnsWidth = startX;
+
+          while (turnsWidth < width + startX) {
+              int turnsHeight = startY;
+
+              while (startY < height + startY) {
+                  rgbValues[turnsWidth - startX][turnsHeight - startY] = image.getPixel(turnsWidth, turnsHeight);
+
+                  turnsHeight++;
+              }
+
+              turnsWidth++;
+          }
+      }
+
+      //Returns the Obtained RGB Array:
+      return rgbValues;
     }
 
     //Resizing the Bitmap:
@@ -184,10 +195,13 @@ public class VuforiaImageInit extends Analyze {
         //Resize Variables:
         int width = bm.getWidth();
         int height = bm.getHeight();
+
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
+
         // CREATE A MATRIX FOR THE MANIPULATION
         Matrix matrix = new Matrix();
+
         // RESIZE THE BIT MAP
         matrix.postScale(scaleWidth, scaleHeight);
 
@@ -195,6 +209,8 @@ public class VuforiaImageInit extends Analyze {
         Bitmap resizedBitmap = Bitmap.createBitmap(
                 bm, 0, 0, width, height, matrix, false);
         bm.recycle();
+
+        //Return Bitmap:
         return resizedBitmap;
     }
 }
