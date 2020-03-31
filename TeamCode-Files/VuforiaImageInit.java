@@ -24,7 +24,7 @@ public class VuforiaImageInit extends Analyze {
     //Vuforia Elements:
     VuforiaLocalizer vuforia;
     private static final String VUFORIA_KEY =
-            "AR7KPuz/////AAABmSKvAg58mkBSqvvfxvaYqxMN8S2CvbOIzcpLyLVqb9hLPXQf3hPCERtF9azaj5sBUezFRBqdVA53ZAsNmlWW/ThqkaHtmpKNqXneP6p8VhN4liG3ofA7Cidx234PKNIhalLvby0jdmuxT5Uhh4dJjST6taoZGArAQz7Df8hzPG26Nd92L1ATW3mO4qzNAny2UK5YrzG92bUIxqvpDLkjeq8UNTLHYD4ulI1i+Jl/dPzU2PdeNPEqlsykdshGvcuRWRz8qeMXfpKVZ9TXmLxqvuTe6K291gxuKtfWXJ11rYJHTJlUAvooMpPaAh2/isv6LUy83+3UhIyl1kNxaNeMHK52iqEjpswOiOmVkniWTblp";
+            "---YOUR VUFORIA KEY---";
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
 
   /* Constructor */
@@ -104,13 +104,13 @@ public class VuforiaImageInit extends Analyze {
   }
 
   //Detection Method:
-  public boolean detectObject(int[][] rgbValues, int lightingMargin, int pixelCount) {
+  public boolean detectObject(int[][] rgbValues, int[] lightingMargin, int pixelCount) {
     //Main Boolean:
     boolean mainBool = false; //Default Value
 
     try {
       //Finds the Value Number of Pixels and Sets Boolean:
-      int binaryValues[][] = boxDetector(rgbValues, lightingMargin);
+      int binaryValues[][] = binaryDetector(rgbValues, lightingMargin);
       mainBool = getBodyBoolean(binaryValues, pixelCount);
     }
 
