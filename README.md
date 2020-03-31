@@ -24,12 +24,12 @@ To see how it works visit Slide 7: https://docs.google.com/presentation/d/15Jl5z
 Sample Pipeline:
   ```Java
   
-    public boolean sampleLeftPipeline() {
-   	int lightingArray[] = { 25, 25, 25 };
-   	Bitmap objectImage = VuforiaImageInit.getImage(0.1);
-   	int leftRGBArray[][] = VuforiaImageInit.getRGBArray(objectImage, 12, 20, 20, 16);
-   	boolean foundLeft = imageInit.detectObject(leftRGBArray, lightingArray, 20);
-   	return foundLeft;
-    }
+ public boolean sampleLeftPipeline() {
+   int lightingArray[] = { 25, 25, 25 };
+   Bitmap objectImage = VuforiaImageInit.getImage(0.1);
+   int leftRGBArray[][] = VuforiaImageInit.getRGBArray(objectImage, 12, 20, 20, 16);
+   boolean foundLeft = imageInit.detectObject(leftRGBArray, lightingArray, 20);
+   return foundLeft;
+ }
 
   ```
