@@ -24,25 +24,19 @@ To see how it works visit Slide 7: https://docs.google.com/presentation/d/15Jl5z
 Sample Pipeline:
   ```Java
   
-    public boolean[] samplePipeline(int[] lightingMarginArray) {
-      //Pipeline Array:
-      boolean pipelineArray[] = new boolean[2];
-    
-      //Getting BitMap Image:
-      Bitmap objectImage = imageInit.getImage(0.1);
-
-      //Left Setting:
-      int leftRGBArray[][] = VuforiaImageInit.getRGBArray(objectImage, 12, 20, 20, 16);
-      boolean foundLeft = VuforiaImageInit.detectObject(leftRGBArray, lightingMarginArray, 20);
-      pipelineArray[0] = foundLeft;
+    public boolean sampleLeftPipeline() {
+      //Adjusted for Lighting Conditions:
+   	int lightingArray[] = { 25, 25, 25 };
       
-      //Right Setting:
-      int rightRGBArray[][] = VuforiaImageInit.getRGBArray(objectImage, 76, 20, 20, 16);
-      boolean foundRight = VuforiaImageInit.detectObject(rightRGBArray, lightingMarginArray, 20);
-      pipelineArray[1] = foundRight;
+      //Gets Bitmap:
+   	Bitmap objectImage = VuforiaImageInit.getImage(0.1);
       
-      //Returns Boolean Array:
-      return pipelineArray;
+      //Detects Object:
+   	int leftRGBArray[][] = VuforiaImageInit.getRGBArray(objectImage, 12, 20, 20, 16);
+   	boolean foundLeft = imageInit.detectObject(leftRGBArray, lightingArray, 20);
+      
+      //Returns Boolean
+   	return foundLeft;
     }
 
   ```
