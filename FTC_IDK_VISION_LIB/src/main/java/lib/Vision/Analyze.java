@@ -41,14 +41,20 @@ public class Analyze extends Capture {
 			detectorBlue = 0;
 		}
 	}
-	
+
 	//Prints Detector Settings:
-	public static void printDetectorSettings() {
+	public static String printDetectorSettings() {
 		//RGB Array:
-		int localRGBSettingsArray[] = {detectorRed, detectorGreen, detectorBlue}; 
-		
+		int localRGBSettingsArray[] = {detectorRed, detectorGreen, detectorBlue};
+
+		//Detector Settings String:
+		String detectorSettings = detectorName + " with RGB Settings of: " + Arrays.toString(localRGBSettingsArray);
+
 		//Simply Prints the Settings of the Detector:
-		System.out.println(detectorName + " with RGB Settings of: " + Arrays.toString(localRGBSettingsArray));
+		//System.out.println(detectorSettings);
+
+		//Returns Settings:
+		return detectorSettings;
 	}
 	
 	/* COLOR ANALYSIS METHODS!!! */
