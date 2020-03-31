@@ -22,7 +22,7 @@ To see how it works visit Slide 7: https://docs.google.com/presentation/d/15Jl5z
 ### Usage Instructions:
   
 Sample Pipeline:
-  ```Java
+```Java
   
  public boolean sampleLeftPipeline() {
    int lightingArray[] = { 25, 25, 25 };
@@ -32,4 +32,4 @@ Sample Pipeline:
    return foundLeft;
  }
 
-  ```
+```
