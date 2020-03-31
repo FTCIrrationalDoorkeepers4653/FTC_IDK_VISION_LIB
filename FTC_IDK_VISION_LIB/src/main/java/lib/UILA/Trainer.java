@@ -90,11 +90,11 @@ public class Trainer {
 	    int checkTurns = turns;
 	
 	    //Pre-Removal Debugs:
-	    System.out.println(Arrays.deepToString(fitnessVals));
-	    System.out.println(Arrays.deepToString(weights));
-	    System.out.println(Arrays.deepToString(trainData));
-	    System.out.println(Arrays.deepToString(targetResultData));
-	    System.out.println("Begining Removal...");
+	    //System.out.println(Arrays.deepToString(fitnessVals));
+	    //System.out.println(Arrays.deepToString(weights));
+	    //System.out.println(Arrays.deepToString(trainData));
+	    //System.out.println(Arrays.deepToString(targetResultData));
+	    //System.out.println("Begining Removal...");
 	
 	    thirdLoop: while (turns < startTurns) {
 	      if (fitnessVals[checkTurns] == 0.0) {
@@ -114,10 +114,10 @@ public class Trainer {
 	    }
 	 
 	    //Post-Removal Debugs:
-	    System.out.println(Arrays.deepToString(fitnessVals));
-	    System.out.println(Arrays.deepToString(weights));
-	    System.out.println(Arrays.deepToString(trainData));
-	    System.out.println(Arrays.deepToString(targetResultData));
+	    //System.out.println(Arrays.deepToString(fitnessVals));
+	    //System.out.println(Arrays.deepToString(weights));
+	    //System.out.println(Arrays.deepToString(trainData));
+	    //System.out.println(Arrays.deepToString(targetResultData));
     }
    
     else {
@@ -197,11 +197,11 @@ public class Trainer {
 	    HandleData.saveData(identifier + "mY.txt", M[1]); //M Y
 	  
 	    //Value Debugs:
-	    System.out.println("TL: " + Arrays.toString(TL));
-	    System.out.println("BL: " + Arrays.toString(BL));
-	    System.out.println("TR: " + Arrays.toString(TR));
-	    System.out.println("BR: " + Arrays.toString(BR));
-	    System.out.println("M: " + Arrays.toString(M));
+	    //System.out.println("TL: " + Arrays.toString(TL));
+	    //System.out.println("BL: " + Arrays.toString(BL));
+	    //System.out.println("TR: " + Arrays.toString(TR));
+	    //System.out.println("BR: " + Arrays.toString(BR));
+	    //System.out.println("M: " + Arrays.toString(M));
 	    
 	    //Sets the Array Values (TL, BL, TR, BR, M):
 	    
@@ -333,7 +333,7 @@ public class Trainer {
 	
 	  //Calculates Confidence:
 	  confidence = (distanceToM+avgDistance); //Returns Dist Value
-	  System.out.println("DistValue: " + confidence); //Dist Val Debug
+	  //System.out.println("DistValue: " + confidence); //Dist Val Debug
 	
 	  //Returns Value:
 	  return confidence;  

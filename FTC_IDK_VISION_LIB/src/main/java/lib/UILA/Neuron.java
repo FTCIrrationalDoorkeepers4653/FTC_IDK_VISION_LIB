@@ -110,7 +110,7 @@ public class Neuron extends Trainer {
 	}
 	
 	//Debug:
-	System.out.println(Arrays.deepToString(timesClassifiedIndex));
+	//System.out.println(Arrays.deepToString(timesClassifiedIndex));
 	
 	//Checks for times Classified:
 	if (timesClassified > 1) {
@@ -130,7 +130,7 @@ public class Neuron extends Trainer {
 	  } 	
 	  
 	  //Debug:
-	  System.out.println(Arrays.deepToString(confidences));
+	  //System.out.println(Arrays.deepToString(confidences));
 	  
 	  //Resets turn Value:
 	  turns = 0;
