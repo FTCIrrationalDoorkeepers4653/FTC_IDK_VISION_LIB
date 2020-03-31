@@ -25,17 +25,10 @@ Sample Pipeline:
   ```Java
   
     public boolean sampleLeftPipeline() {
-      //Adjusted for Lighting Conditions:
    	int lightingArray[] = { 25, 25, 25 };
-      
-      //Gets Bitmap:
    	Bitmap objectImage = VuforiaImageInit.getImage(0.1);
-      
-      //Detects Object:
    	int leftRGBArray[][] = VuforiaImageInit.getRGBArray(objectImage, 12, 20, 20, 16);
    	boolean foundLeft = imageInit.detectObject(leftRGBArray, lightingArray, 20);
-      
-      //Returns Boolean
    	return foundLeft;
     }
 
