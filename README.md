@@ -37,7 +37,7 @@ Sample Pipeline:
       pipelineArray[0] = foundLeft;
       
       //Right Setting:
-      int rightRGBArray[][] = VuforiaImageInit.getRGBArray(objectImage, 62, 20, 20, 16);
+      int rightRGBArray[][] = VuforiaImageInit.getRGBArray(objectImage, 76, 20, 20, 16);
       boolean foundRight = VuforiaImageInit.detectObject(rightRGBArray, lightingMarginArray, 20);
       pipelineArray[1] = foundRight;
       
