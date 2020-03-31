@@ -13,10 +13,6 @@ public class Analyze extends Capture {
 	//Objects:
 	private static Neuron neuron = new Neuron();
 	
-  //Locked Midpoint Values:
-	public static int lockMidpointX, lockMidpointY;
-	public static int[] midpointRGBValues = new int[3];
-	
 	//Detector Settings (Public Settings):
 	private static int detectorRed, detectorGreen, detectorBlue;
 	private static String detectorName;
@@ -443,7 +439,7 @@ public class Analyze extends Capture {
 		return colorBodyWidth;
 	}
 	
-  //Gets Height of Area (IF PRESENT):  
+    //Gets Height of Area (IF PRESENT):
 	public static int getBodyHeight(int[][] valuesArray) throws Exception {
 		//Height Variable:
 		int colorBodyHeight = 0; //Default Value
@@ -480,7 +476,7 @@ public class Analyze extends Capture {
 		return colorMidX;
 	}
 	
-  //Gets The Midpoint Y (IF PRESENT):
+    //Gets The Midpoint Y (IF PRESENT):
 	public static int getMidpointY(int[][] valuesArray) throws Exception {
 		//Y Variable:
 		int colorMidY = 0; //Default Value
@@ -521,57 +517,4 @@ public class Analyze extends Capture {
 		 Trains Data:
 		 Trainer.findBoxValues(trainingDataX, trainingDataY, modelIdentifier); 
 	*/
-	
-	/* MOVEMENT DETECTION METHODS */
-	
-	//Locks Midpoint Values:
-	public static void lockMidpoint(String imageIdentifier, boolean classification, int midpointX, int midpointY) throws Exception {	
-		if (classification) {
-			//Locks Midpoint Values:
-		  lockMidpointX = midpointX;
-		  lockMidpointY = midpointY;
-		  
-		  //Locks Midpoint RGB Values:
-		  int rgb = Capture.getRGB(imageIdentifier, lockMidpointX, lockMidpointY);
-		  int localMidpointRGB[] = Capture.convertRGB(rgb);
-		  midpointRGBValues = localMidpointRGB;
-		}
-		
-		else {
-			System.out.print("No Package Detected!");
-		}
-	}
-	
-	//Tracks Midpoint RGB Values:
-	public static boolean trackMidpoint(String imageIdentifier, int lightingMargin) throws Exception {
-		//Current Midpoint Values:
-		int currentRGB = Capture.getRGB(imageIdentifier, lockMidpointX, lockMidpointY);
-		int currentRGBValues[] = Capture.convertRGB(currentRGB);
-		
-		//Margin Value:
-		int margin = lightingMargin; //Used for Different Lighting Conditions (Customizable)
-		
-		//Sets Checking Values:
-		int redDif = midpointRGBValues[0]-currentRGBValues[0];
-		int greenDif = midpointRGBValues[1]-currentRGBValues[1];
-		int blueDif = midpointRGBValues[2]-currentRGBValues[2];
-		
-	  //Multiply Values:
-		int testRG = redDif*greenDif;
-		int testRB = redDif*blueDif;
-		int testGB = greenDif*blueDif;
-		
-		//Checks Condition:
-		if (Math.abs(redDif) <= margin && Math.abs(greenDif) <= margin && Math.abs(blueDif) <= margin && 
-				testRG >= 0 && testRB >= 0 && testGB >= 0) {
-			
-			//Returns True Value (Box is Present):
-			return true;
-		}
-		
-		else {
-			//Returns False Value (Box is not Present):
-			return false;
-		}
-	}
 }
