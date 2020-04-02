@@ -4,12 +4,14 @@ public class Capture {
   //Constructor:
   public Capture() {}
 
-  /* CONVERSION METHODS */
+  /* CONVERSION METHODS (USES RGB888) */
   
   //Converts Standard RGB into Usable RGB:
   public static int[] convertRGB(int rgbValue) throws Exception {
 	  //RGB Array:
-	  int rgbValues[] = new int[3];  
+	  int rgbValues[] = new int[3];
+
+	  //Array Values:
 	  int blue = (rgbValue) & 0x0ff;
 	  int green = (rgbValue >> 8) & 0x0ff;
 	  int red = (rgbValue >> 16) & 0x0ff;

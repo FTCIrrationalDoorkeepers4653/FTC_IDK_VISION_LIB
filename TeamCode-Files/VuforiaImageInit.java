@@ -24,7 +24,7 @@ public class VuforiaImageInit extends Analyze {
     //Vuforia Elements:
     VuforiaLocalizer vuforia;
     private static final String VUFORIA_KEY =
-            "---YOUR VUFORIA KEY---";
+            "AR7KPuz/////AAABmSKvAg58mkBSqvvfxvaYqxMN8S2CvbOIzcpLyLVqb9hLPXQf3hPCERtF9azaj5sBUezFRBqdVA53ZAsNmlWW/ThqkaHtmpKNqXneP6p8VhN4liG3ofA7Cidx234PKNIhalLvby0jdmuxT5Uhh4dJjST6taoZGArAQz7Df8hzPG26Nd92L1ATW3mO4qzNAny2UK5YrzG92bUIxqvpDLkjeq8UNTLHYD4ulI1i+Jl/dPzU2PdeNPEqlsykdshGvcuRWRz8qeMXfpKVZ9TXmLxqvuTe6K291gxuKtfWXJ11rYJHTJlUAvooMpPaAh2/isv6LUy83+3UhIyl1kNxaNeMHK52iqEjpswOiOmVkniWTblp";
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
 
   /* Constructor */
@@ -51,7 +51,7 @@ public class VuforiaImageInit extends Analyze {
 
       //Instantiates the Vuforia engine:
       vuforia = ClassFactory.getInstance().createVuforia(parameters);
-      Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
+      Vuforia.setFrameFormat(PIXEL_FORMAT.RGB888, true);
 
       //Flash for Detection:
       com.vuforia.CameraDevice.getInstance().setFlashTorchMode(flash);
@@ -135,7 +135,7 @@ public class VuforiaImageInit extends Analyze {
 
         formatLoop:
         for (int i = 0; i < numImages; i++) {
-            if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
+            if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB888) {
                 //Creates Bitmap Image:
                 rgbImage = frame.getImage(i);
                 bitmapImage = Bitmap.createBitmap(rgbImage.getWidth(), rgbImage.getHeight(), Bitmap.Config.RGB_565);
