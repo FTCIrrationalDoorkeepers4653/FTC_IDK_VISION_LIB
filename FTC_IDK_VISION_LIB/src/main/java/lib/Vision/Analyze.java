@@ -322,16 +322,17 @@ public class Analyze extends Capture {
 	}
 
 	/* MACHINE LEARNING METHODS!!! */
-	
+
 	//Uses Width and Height to Use Model to Classify Box:
-	public static boolean classifyBox(String modelIdentifier, int width, int height) throws Exception {
+	public static boolean classifyObject(String modelIdentifier, int width, int height) throws Exception {
 		//Classification Value:
-		boolean boxClass = false; //Default Value
+		boolean objectClass = false; //Default Value
 
 		//Classifies Box:
-		boxClass = neuron.getClass((double) width, (double) height, modelIdentifier);
+		objectClass = Neuron.getClass((double) width, (double) height, modelIdentifier);
 
-		return boxClass;
+		//Returns the Class:
+		return objectClass;
 	}
 	
 	/* 

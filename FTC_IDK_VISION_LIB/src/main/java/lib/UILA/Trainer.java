@@ -124,115 +124,116 @@ public class Trainer {
 	    System.err.println("Data Set Input Error!");   
     }
   }
-  
-  //Box Value Equation Function:
-  public static double[][] findBoxValues(Double trainData[], Double targetResultData[], String identifier) throws Exception {
-	  //Main 2D Array:
-	  double allBoxValues[][] = new double[2][5];
-  	
-	  //Checks for Data Set Errors:
-	  if (trainData.length == targetResultData.length && trainData.length != 0 && targetResultData.length != 0) {
-	    //Arrays:	
-	    Double trainSorted[] = new Double[trainData.length];
-	    Double targetSorted[] = new Double[targetResultData.length];
-	  
-	    //Sets Sort Arrays Data:
-	    trainSorted = copyArray(trainData);
-	    targetSorted = copyArray(targetResultData);
-	  
-	    //Sorts Arrays:
-	    Arrays.sort(trainSorted);
-	    Arrays.sort(targetSorted);
-	  
-	    //Box Variables:
-	    double maxX, minX, maxY, minY;
-	  
-	    //Top Left:
-	    double[] TL = new double[2];
-	    //Bottom Left:
-	    double[] BL = new double [2];
-	    //Top Right:
-	    double[] TR = new double[2];
-	    //Bottom Right
-	    double[] BR = new double[2]; 
-	    //Midpoint:
-	    double[] M = new double[2];
-	  
-	    //Setting Maxs and Mins:
-	    maxX = trainSorted[trainSorted.length-1]; //Sets Maximum X 
-	    minX = trainSorted[0]; //Minimum X
-	  
-	    maxY = targetSorted[targetSorted.length-1]; //Sets Maximum Y
-	    minY = targetSorted[0]; //Sets Minimum Y
-	  
-	    //Setting Box Values:
-	    TL[0] = minX; //Top Left X
-	    TL [1] = maxY; //Top Left Y
-	  
-	    BL[0] = minX; //Bottom Left X
-	    BL [1] = minY; //Bottom Left Y
-	  
-	    TR[0] = maxX; //Top Right X
-	    TR [1] = maxY; //Top Right Y
-	  
-	    BR[0] = maxX; //Bottom Right X
-	    BR[1] = minY; //Bottom Right Y
-	  
-	    M = getMidpoint(trainData, targetResultData); //Midpoint X and Y 
-	  
-	    //Saves the Data (as a model):
-	    HandleData.saveData(identifier + "tlX.txt", TL[0]); //TL X
-	    HandleData.saveData(identifier + "tlY.txt", TL[1]); //TL Y
-	  
-	    HandleData.saveData(identifier + "blX.txt", BL[0]); //BL X
-	    HandleData.saveData(identifier + "blY.txt", BL[1]); //BL Y
-	  
-	    HandleData.saveData(identifier + "trX.txt", TR[0]); //TR X
-	    HandleData.saveData(identifier + "trY.txt", TR[1]); //TR Y
-	  
-	    HandleData.saveData(identifier + "brX.txt", BR[0]); //BR X
-	    HandleData.saveData(identifier + "brY.txt", BR[1]); //BR Y
-	  
-	    HandleData.saveData(identifier + "mX.txt", M[0]); //M X
-	    HandleData.saveData(identifier + "mY.txt", M[1]); //M Y
-	  
-	    //Value Debugs:
-	    //System.out.println("TL: " + Arrays.toString(TL));
-	    //System.out.println("BL: " + Arrays.toString(BL));
-	    //System.out.println("TR: " + Arrays.toString(TR));
-	    //System.out.println("BR: " + Arrays.toString(BR));
-	    //System.out.println("M: " + Arrays.toString(M));
-	    
-	    //Sets the Array Values (TL, BL, TR, BR, M):
-	    
-	    //TL Values:
-	    allBoxValues[0][0] = TL[0];
-	    allBoxValues[1][0] = TL[1];
-	    
-	    //BL Values:
-	    allBoxValues[0][1] = BL[0];
-	    allBoxValues[1][1] = BL[1];
-	    
-	    //TR Values:
-	    allBoxValues[0][2] = TR[0];
-	    allBoxValues[1][2] = TR[1];
-	    
-	    //BR Values:
-	    allBoxValues[0][3] = BR[0];
-	    allBoxValues[1][3] = BR[1];
-	    
-	    //M Values:
-	    allBoxValues[0][4] = M[0];
-	    allBoxValues[1][4] = M[1];
-	  }  
-	
-	  else {
-	    System.err.println("Data Set Input Error!");   
-    }
-	  
-	  //Returns 2D Array:
-	  return allBoxValues;
-  }
+
+	//Box Value Equation Function:
+	public static double[][] findBoxValues(Double trainData[], Double targetResultData[],
+										   double boxPadding, String identifier) throws Exception {
+		//Main 2D Array:
+		double allBoxValues[][] = new double[2][5];
+
+		//Checks for Data Set Errors:
+		if (trainData.length == targetResultData.length && trainData.length != 0 && targetResultData.length != 0) {
+			//Arrays:
+			Double trainSorted[] = new Double[trainData.length];
+			Double targetSorted[] = new Double[targetResultData.length];
+
+			//Sets Sort Arrays Data:
+			trainSorted = copyArray(trainData);
+			targetSorted = copyArray(targetResultData);
+
+			//Sorts Arrays:
+			Arrays.sort(trainSorted);
+			Arrays.sort(targetSorted);
+
+			//Box Variables:
+			double maxX, minX, maxY, minY;
+
+			//Top Left:
+			double[] TL = new double[2];
+			//Bottom Left:
+			double[] BL = new double [2];
+			//Top Right:
+			double[] TR = new double[2];
+			//Bottom Right
+			double[] BR = new double[2];
+			//Midpoint:
+			double[] M = new double[2];
+
+			//Setting Maxs and Mins:
+			maxX = trainSorted[trainSorted.length-1] + (trainSorted[trainSorted.length-1]*boxPadding); //Sets Maximum X
+			minX = trainSorted[0] - (trainSorted[0]*boxPadding); //Minimum X
+
+			maxY = targetSorted[targetSorted.length-1] + (targetSorted[targetSorted.length-1]*boxPadding); //Sets Maximum Y
+			minY = targetSorted[0] - (targetSorted[0]*boxPadding); //Sets Minimum Y
+
+			//Setting Box Values:
+			TL[0] = minX; //Top Left X
+			TL [1] = maxY; //Top Left Y
+
+			BL[0] = minX; //Bottom Left X
+			BL [1] = minY; //Bottom Left Y
+
+			TR[0] = maxX; //Top Right X
+			TR [1] = maxY; //Top Right Y
+
+			BR[0] = maxX; //Bottom Right X
+			BR[1] = minY; //Bottom Right Y
+
+			M = getMidpoint(trainData, targetResultData); //Midpoint X and Y
+
+			//Saves the Data (as a model):
+			HandleData.saveData(identifier + "tlX.txt", TL[0]); //TL X
+			HandleData.saveData(identifier + "tlY.txt", TL[1]); //TL Y
+
+			HandleData.saveData(identifier + "blX.txt", BL[0]); //BL X
+			HandleData.saveData(identifier + "blY.txt", BL[1]); //BL Y
+
+			HandleData.saveData(identifier + "trX.txt", TR[0]); //TR X
+			HandleData.saveData(identifier + "trY.txt", TR[1]); //TR Y
+
+			HandleData.saveData(identifier + "brX.txt", BR[0]); //BR X
+			HandleData.saveData(identifier + "brY.txt", BR[1]); //BR Y
+
+			HandleData.saveData(identifier + "mX.txt", M[0]); //M X
+			HandleData.saveData(identifier + "mY.txt", M[1]); //M Y
+
+			//Value Debugs:
+			System.out.println("TL: " + Arrays.toString(TL));
+			System.out.println("BL: " + Arrays.toString(BL));
+			System.out.println("TR: " + Arrays.toString(TR));
+			System.out.println("BR: " + Arrays.toString(BR));
+			System.out.println("M: " + Arrays.toString(M));
+
+			//Sets the Array Values (TL, BL, TR, BR, M):
+
+			//TL Values:
+			allBoxValues[0][0] = TL[0];
+			allBoxValues[1][0] = TL[1];
+
+			//BL Values:
+			allBoxValues[0][1] = BL[0];
+			allBoxValues[1][1] = BL[1];
+
+			//TR Values:
+			allBoxValues[0][2] = TR[0];
+			allBoxValues[1][2] = TR[1];
+
+			//BR Values:
+			allBoxValues[0][3] = BR[0];
+			allBoxValues[1][3] = BR[1];
+
+			//M Values:
+			allBoxValues[0][4] = M[0];
+			allBoxValues[1][4] = M[1];
+		}
+
+		else {
+			System.err.println("Data Set Input Error!");
+		}
+
+		//Returns 2D Array:
+		return allBoxValues;
+	}
   
   //Calculates the Correct Midpoint:
   public static double[] getMidpoint(Double trainData[], Double targetResultData[]) throws Exception {

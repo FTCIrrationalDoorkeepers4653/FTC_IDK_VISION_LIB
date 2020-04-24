@@ -1,9 +1,6 @@
 package lib.Vision;
 
 public class Capture {
-  //Constructor:
-  public Capture() {}
-
   /* CONVERSION METHODS (USES RGB888) */
   
   //Converts Standard RGB into Usable RGB:
