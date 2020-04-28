@@ -25,7 +25,7 @@ To see how it works visit Slide 7: https://docs.google.com/presentation/d/15Jl5z
    }
    ```
    <b>-> Sync Gradle</b>
-2. If Jitpack doesn't work, download this repo, extract, and go into <i>Android Studio</i>, go to <b>Gradle Scripts -> TeamCode-buld.release.gradle -> add the line</b> ```implementation project (':FTC_IDK_VISION_LIB')``` <b>-> Sync Gradle</b>
+2. If <i>Jitpack</i> doesn't work, download this repo, extract, and go into <i>Android Studio</i>, go to <b>Gradle Scripts -> TeamCode-buld.release.gradle -> add the line</b> ```implementation project (':FTC_IDK_VISION_LIB')``` <b>-> Sync Gradle</b>
 3. Lastly, add Source Files of <i>TeamCode-Files</i> to your <b>Team Code -> src -> main -> java -> org -> firstinspires -> ftc -> teamcode package</b>
 
 ***
