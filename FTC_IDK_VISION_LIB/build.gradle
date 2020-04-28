@@ -4,5 +4,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
+allprojects {
+  repositories {
+    maven { url 'https://jitpack.io' }
+  }
+}
+
+dependencies {
+  implementation 'com.github.yamunasoftware18:UILA_API:1.1.9'
+}
+
 sourceCompatibility = "7"
 targetCompatibility = "7"
