@@ -14,9 +14,7 @@ public class ImageAuth extends Analyze {
   private static String brightnessID = "brightnessData";
 
   /* CONSTRUCTOR */
-  public ImageAuth() {
-    super();
-  }
+  public ImageAuth() { super(); }
 
   /*
      METHOD OF TRAINING TO BE DONE IN MAIN APPLICATION JAVA FILE (BACKEND)

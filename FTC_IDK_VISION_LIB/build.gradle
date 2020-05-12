@@ -11,7 +11,7 @@ allprojects {
 }
 
 dependencies {
-  implementation 'com.github.yamunasoftware18:UILA_API:1.1.9'
+  implementation 'com.github.yamunasoftware18:UILA_API:1.2.3'
 }
 
 sourceCompatibility = "7"
