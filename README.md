@@ -1,14 +1,10 @@
 # FTC_IDK_VISION_LIB
 
-***
-
-### Description:
-
 <i>Simple and Easy to Use FTC Vision Pipeline System Library, Created By Team #4653 Irrational DoorKeepers</i>
 
 ***
 
-### Installation Instructions:
+### Installation:
 
 1. Open FTC project in <i>Android Studio</i> (no OnBot Java :[ )... <b>Gradle Scripts -> TeamCode-build.gradle -> add the lines</b>
    ```
@@ -28,7 +24,7 @@
 
 ***
    
-### Usage Instructions:
+### Instructions:
   
 Sample Pipeline:
 ```Java 
