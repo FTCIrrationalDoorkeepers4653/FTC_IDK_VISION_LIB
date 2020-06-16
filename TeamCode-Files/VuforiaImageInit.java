@@ -11,7 +11,7 @@ import com.vuforia.Vuforia;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-import lib.Vision.Analyze;
+import lib.Analyze;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
@@ -19,55 +19,62 @@ public class VuforiaImageInit extends Analyze {
   //Hardware Map Object:
   HardwareMap hardwareMap;
 
-  /* VUFORIA PIECES!!! */
+  /*
+   * PRESET DETECTOR VALUES:
+   *
+   * Black: 0, 0, 0
+   *
+   */
 
-    //Vuforia Elements:
-    VuforiaLocalizer vuforia;
-    private static final String VUFORIA_KEY =
-            "---YOUR KEY HERE---";
-    private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
+  /* VUFORIA PIECES */
 
-  /* Constructor */
+  //Vuforia Elements:
+  VuforiaLocalizer vuforia;
+  private static final String VUFORIA_KEY =
+      "AR7KPuz/////AAABmSKvAg58mkBSqvvfxvaYqxMN8S2CvbOIzcpLyLVqb9hLPXQf3hPCERtF9azaj5sBUezFRBqdVA53ZAsNmlWW/ThqkaHtmpKNqXneP6p8VhN4liG3ofA7Cidx234PKNIhalLvby0jdmuxT5Uhh4dJjST6taoZGArAQz7Df8hzPG26Nd92L1ATW3mO4qzNAny2UK5YrzG92bUIxqvpDLkjeq8UNTLHYD4ulI1i+Jl/dPzU2PdeNPEqlsykdshGvcuRWRz8qeMXfpKVZ9TXmLxqvuTe6K291gxuKtfWXJ11rYJHTJlUAvooMpPaAh2/isv6LUy83+3UhIyl1kNxaNeMHK52iqEjpswOiOmVkniWTblp";
+  private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
+
+  //Constructor:
   public VuforiaImageInit() {
     super();
   }
 
-  /* METHODS!!! */
+  /* VUFIRIA METHODS */
 
   //Initialize Vuforia:
   public void initVuforia(HardwareMap hwMap, int[] detectorRGBArray, String detectorName, boolean flash) {
-      //PARAMS: MUST BE HARDWARE MAP OBJECT, RGB ARRAY OF 3, STRING NAME FOR DETECTOR
+    //PARAMS: MUST BE HARDWARE MAP OBJECT, RGB ARRAY OF 3, STRING NAME FOR DETECTOR
 
-      //Declares Hardware Map:
-      hardwareMap = hwMap;
+    //Declares Hardware Map:
+    hardwareMap = hwMap;
 
-      /* Initaites Vuforia: */
-      int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-      VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+    /* Initaites Vuforia: */
+    int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+    VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-      //Sets the Vuforia Elements:
-      parameters.vuforiaLicenseKey = VUFORIA_KEY;
-      parameters.cameraDirection   = CAMERA_CHOICE;
+    //Sets the Vuforia Elements:
+    parameters.vuforiaLicenseKey = VUFORIA_KEY;
+    parameters.cameraDirection = CAMERA_CHOICE;
 
-      //Instantiates the Vuforia engine:
-      vuforia = ClassFactory.getInstance().createVuforia(parameters);
-      Vuforia.setFrameFormat(PIXEL_FORMAT.RGB888, true);
+    //Instantiates the Vuforia engine:
+    vuforia = ClassFactory.getInstance().createVuforia(parameters);
+    Vuforia.setFrameFormat(PIXEL_FORMAT.RGB888, true);
 
-      //Flash for Detection:
-      com.vuforia.CameraDevice.getInstance().setFlashTorchMode(flash);
+    //Flash for Detection:
+    com.vuforia.CameraDevice.getInstance().setFlashTorchMode(flash);
 
-      /* INITS the Custom Detector */
-      try {
-          initDetector(detectorName, detectorRGBArray[0], detectorRGBArray[1], detectorRGBArray[2]);
-      }
+    /* INITS the Custom Detector */
+    try {
+      initDetector(detectorName, detectorRGBArray[0], detectorRGBArray[1], detectorRGBArray[2]);
+    }
 
-      catch (Exception e) {
-          e.printStackTrace();
-      }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   //Disables Vuforia After Tracking:
-  public void  disableVuforia() {
+  public void disableVuforia() {
     //Turns off the Flash:
     com.vuforia.CameraDevice.getInstance().setFlashTorchMode(false);
 
@@ -84,6 +91,8 @@ public class VuforiaImageInit extends Analyze {
     com.vuforia.CameraDevice.getInstance().setField("opti-zoom", "opti-zoom-on");
     com.vuforia.CameraDevice.getInstance().setField("zoom", zoomSetting);
   }
+
+  /* DETECTOR METHODS */
 
   //RGB Comparison Method:
   public int[] getAverageRGBValues(int singleRGBValues[][]) {
@@ -103,7 +112,7 @@ public class VuforiaImageInit extends Analyze {
     return localAverage;
   }
 
-  //Detection Method:
+  //Detection Boolean Method:
   public boolean detectObject(int[][] rgbValues, int[] lightingMargin, int pixelCount) {
     //Main Boolean:
     boolean mainBool = false; //Default Value
@@ -122,6 +131,27 @@ public class VuforiaImageInit extends Analyze {
     return mainBool;
   }
 
+  //Detection Blob Method:
+  public int detectBlobs(int[][] rgbValues, int[] lightingMargin, int distanceThreshold) {
+    //Main Blob Count (w/ Default):
+    int mainCount = 0;
+
+    try {
+      //Finds the Value Number of Pixels and Sets Boolean:
+      int binaryValues[][] = binaryDetector(rgbValues, lightingMargin);
+      mainCount = getBodyBlobs(binaryValues, distanceThreshold);
+    }
+
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    //Returns the Blob Count:
+    return mainCount;
+  }
+
+  /* CAPTURE METHODS */
+
   //Vuforia Capture Image Method:
   public Bitmap getImage(double resizedRatio) {
     //PARAMS: Resized Ratio cannot be Zero!!!
@@ -130,30 +160,30 @@ public class VuforiaImageInit extends Analyze {
 
     //Converts Frame to BitMap of RGB Format:
     try {
-        VuforiaLocalizer.CloseableFrame frame = vuforia.getFrameQueue().take();
-        long numImages = frame.getNumImages();
+      VuforiaLocalizer.CloseableFrame frame = vuforia.getFrameQueue().take();
+      long numImages = frame.getNumImages();
 
-        formatLoop:
-        for (int i = 0; i < numImages; i++) {
-            if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB888) {
-                //Creates Bitmap Image:
-                rgbImage = frame.getImage(i);
-                bitmapImage = Bitmap.createBitmap(rgbImage.getWidth(), rgbImage.getHeight(), Bitmap.Config.RGB_565);
-                bitmapImage.copyPixelsFromBuffer(rgbImage.getPixels());
+      formatLoop:
+      for (int i = 0; i < numImages; i++) {
+        if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB888) {
+          //Creates Bitmap Image:
+          rgbImage = frame.getImage(i);
+          bitmapImage = Bitmap.createBitmap(rgbImage.getWidth(), rgbImage.getHeight(), Bitmap.Config.RGB_565);
+          bitmapImage.copyPixelsFromBuffer(rgbImage.getPixels());
 
-                //Gets Values for Bitmap Resizing:
-                double currentWidth = bitmapImage.getWidth();
-                double currentHeight = bitmapImage.getHeight();
+          //Gets Values for Bitmap Resizing:
+          double currentWidth = bitmapImage.getWidth();
+          double currentHeight = bitmapImage.getHeight();
 
-                int newWidth = (int) (currentWidth * resizedRatio);
-                int newHeight = (int) (currentHeight * resizedRatio);
+          int newWidth = (int) (currentWidth * resizedRatio);
+          int newHeight = (int) (currentHeight * resizedRatio);
 
-                //Resizing Bitmap:
-                bitmapImage = getResizedBitmap(bitmapImage, newWidth, newHeight);
+          //Resizing Bitmap:
+          bitmapImage = getResizedBitmap(bitmapImage, newWidth, newHeight);
 
-                break formatLoop;
-            }
+          break formatLoop;
         }
+      }
     }
 
     catch (Exception e) {
@@ -164,53 +194,55 @@ public class VuforiaImageInit extends Analyze {
     return bitmapImage;
   }
 
-    //Gets the Array of RGB Values from an Image:
-    public int[][] getRGBArray(Bitmap image, int startX, int startY, int width, int height) {
-      //PARAMS: THE STARTX AND STARTY + THE WIDTH AND HEIGHT MUST BE LESS THAN OR EQUAL TO IMAGE WIDTH AND HEIGHT (Usually Starts at 1280x720)!!!
-      int[][] rgbValues = new int[width][height];
+  /* RGB METHODS */
 
-      if (image != null) {
-          //Gets RGB Values Array from Bitmap:
-          int turnsWidth = startX;
+  //Gets the Array of RGB Values from an Image:
+  public int[][] getRGBArray(Bitmap image, int startX, int startY, int width, int height) {
+    //Main RGB Array (w/ Default):
+    int[][] rgbValues = new int[width][height];
 
-          while (turnsWidth < width + startX) {
-              int turnsHeight = startY;
+    if (image != null) {
+      //Gets RGB Values Array from Bitmap:
+      int turnsWidth = startX;
 
-              while (startY < height + startY) {
-                  rgbValues[turnsWidth - startX][turnsHeight - startY] = image.getPixel(turnsWidth, turnsHeight);
+      while (turnsWidth < width + startX) {
+        int turnsHeight = startY;
 
-                  turnsHeight++;
-              }
+        while (startY < height + startY) {
+          rgbValues[turnsWidth - startX][turnsHeight - startY] = image.getPixel(turnsWidth, turnsHeight);
 
-              turnsWidth++;
-          }
+          turnsHeight++;
+        }
+
+        turnsWidth++;
       }
-
-      //Returns the Obtained RGB Array:
-      return rgbValues;
     }
 
-    //Resizing the Bitmap:
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
-        //Resize Variables:
-        int width = bm.getWidth();
-        int height = bm.getHeight();
+    //Returns the Obtained RGB Array:
+    return rgbValues;
+  }
 
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
+  //Resizing the Bitmap:
+  public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+    //Resize Variables:
+    int width = bm.getWidth();
+    int height = bm.getHeight();
 
-        // CREATE A MATRIX FOR THE MANIPULATION
-        Matrix matrix = new Matrix();
+    float scaleWidth = ((float) newWidth) / width;
+    float scaleHeight = ((float) newHeight) / height;
 
-        // RESIZE THE BIT MAP
-        matrix.postScale(scaleWidth, scaleHeight);
+    //Create a Matrix for Manipulation:
+    Matrix matrix = new Matrix();
 
-        // "RECREATE" THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(
-                bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
+    //Resize BitMap:
+    matrix.postScale(scaleWidth, scaleHeight);
 
-        //Return Bitmap:
-        return resizedBitmap;
-    }
+    //Re-render the BitMap:
+    Bitmap resizedBitmap = Bitmap.createBitmap(
+        bm, 0, 0, width, height, matrix, false);
+    bm.recycle();
+
+    //Return Bitmap:
+    return resizedBitmap;
+  }
 }
