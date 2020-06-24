@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.vuforia.CameraDevice;
 import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
 import com.vuforia.Vuforia;
@@ -31,7 +32,7 @@ public class VuforiaImageInit extends Analyze {
   //Vuforia Elements:
   VuforiaLocalizer vuforia;
   private static final String VUFORIA_KEY =
-      "--YOUR KEY HERE--";
+      "AR7KPuz/////AAABmSKvAg58mkBSqvvfxvaYqxMN8S2CvbOIzcpLyLVqb9hLPXQf3hPCERtF9azaj5sBUezFRBqdVA53ZAsNmlWW/ThqkaHtmpKNqXneP6p8VhN4liG3ofA7Cidx234PKNIhalLvby0jdmuxT5Uhh4dJjST6taoZGArAQz7Df8hzPG26Nd92L1ATW3mO4qzNAny2UK5YrzG92bUIxqvpDLkjeq8UNTLHYD4ulI1i+Jl/dPzU2PdeNPEqlsykdshGvcuRWRz8qeMXfpKVZ9TXmLxqvuTe6K291gxuKtfWXJ11rYJHTJlUAvooMpPaAh2/isv6LUy83+3UhIyl1kNxaNeMHK52iqEjpswOiOmVkniWTblp";
   private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
 
   //Constructor:
@@ -39,16 +40,15 @@ public class VuforiaImageInit extends Analyze {
     super();
   }
 
-  /* VUFIRIA METHODS */
+  /* VUFORIA METHODS */
 
   //Initialize Vuforia:
-  public void initVuforia(HardwareMap hwMap, int[] detectorRGBArray, String detectorName, boolean flash) {
-    //PARAMS: MUST BE HARDWARE MAP OBJECT, RGB ARRAY OF 3, STRING NAME FOR DETECTOR
-
+  public void initVuforia(HardwareMap hwMap, int[] detectorRGBArray,
+    String detectorName, int zoomValue, boolean flash) {
     //Declares Hardware Map:
     hardwareMap = hwMap;
 
-    /* Initaites Vuforia: */
+    //Inits the Vuforia Localizer:
     int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
     VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -56,14 +56,15 @@ public class VuforiaImageInit extends Analyze {
     parameters.vuforiaLicenseKey = VUFORIA_KEY;
     parameters.cameraDirection = CAMERA_CHOICE;
 
-    //Instantiates the Vuforia engine:
+    //Gets the Vuforia engine:
     vuforia = ClassFactory.getInstance().createVuforia(parameters);
     Vuforia.setFrameFormat(PIXEL_FORMAT.RGB888, true);
 
-    //Flash for Detection:
-    com.vuforia.CameraDevice.getInstance().setFlashTorchMode(flash);
+    //Flash and Zoom for Detection:
+    setFlash(flash);
+    setZoom(zoomValue);
 
-    /* INITS the Custom Detector */
+    //Inits the Custom Detector:
     try {
       initDetector(detectorName, detectorRGBArray[0], detectorRGBArray[1], detectorRGBArray[2]);
     }
@@ -90,6 +91,12 @@ public class VuforiaImageInit extends Analyze {
     //Sets the Zoom Settings:
     com.vuforia.CameraDevice.getInstance().setField("opti-zoom", "opti-zoom-on");
     com.vuforia.CameraDevice.getInstance().setField("zoom", zoomSetting);
+  }
+
+  //Sets the Flash (If Needed):
+  public void setFlash(boolean flash) {
+    //Sets the Flash On:
+    com.vuforia.CameraDevice.getInstance().setFlashTorchMode(flash);
   }
 
   /* DETECTOR METHODS */
