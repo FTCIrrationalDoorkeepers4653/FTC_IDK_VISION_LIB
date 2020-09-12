@@ -12,6 +12,8 @@ import com.vuforia.Vuforia;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
+import java.util.ArrayList;
+
 import lib.Analyze;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
@@ -32,7 +34,7 @@ public class VuforiaImageInit extends Analyze {
   //Vuforia Elements:
   VuforiaLocalizer vuforia;
   private static final String VUFORIA_KEY =
-      "--YOUR VUFORIA KEY--";
+      "AR7KPuz/////AAABmSKvAg58mkBSqvvfxvaYqxMN8S2CvbOIzcpLyLVqb9hLPXQf3hPCERtF9azaj5sBUezFRBqdVA53ZAsNmlWW/ThqkaHtmpKNqXneP6p8VhN4liG3ofA7Cidx234PKNIhalLvby0jdmuxT5Uhh4dJjST6taoZGArAQz7Df8hzPG26Nd92L1ATW3mO4qzNAny2UK5YrzG92bUIxqvpDLkjeq8UNTLHYD4ulI1i+Jl/dPzU2PdeNPEqlsykdshGvcuRWRz8qeMXfpKVZ9TXmLxqvuTe6K291gxuKtfWXJ11rYJHTJlUAvooMpPaAh2/isv6LUy83+3UhIyl1kNxaNeMHK52iqEjpswOiOmVkniWTblp";
   private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
 
   //Constructor:
@@ -155,6 +157,26 @@ public class VuforiaImageInit extends Analyze {
 
     //Returns the Blob Count:
     return mainCount;
+  }
+
+  //Detection Pixel Method:
+  public ArrayList<Integer> detectPixelCount(int[][] rgbValues, int[] lightingMargin,
+    int distanceThreshold) {
+    //Main Blob Pixel Count (w/ Default):
+    ArrayList<Integer> pixelCounts = new ArrayList<Integer>();
+
+    try {
+      //Gets the Blob Detection:
+      int blobCount = detectBlobs(rgbValues, lightingMargin, distanceThreshold);
+      pixelCounts = getBlobPixelCounts();
+    }
+
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    //Returns the ArrayList:
+    return pixelCounts;
   }
 
   /* CAPTURE METHODS */

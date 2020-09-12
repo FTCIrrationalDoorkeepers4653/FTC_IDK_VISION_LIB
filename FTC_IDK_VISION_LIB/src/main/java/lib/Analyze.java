@@ -6,6 +6,9 @@ public class Analyze extends Capture {
 	//Detector Settings (Public Settings):
 	private static int detectorRed, detectorGreen, detectorBlue;
 	private static String detectorName;
+
+	//Blob Information ArrayList (w/ Default):
+	private static ArrayList<Integer> pixelCounts = new ArrayList<Integer>();
 	
 	/* CONSTRUCTOR AND SET METHODS */
 
@@ -291,11 +294,13 @@ public class Analyze extends Capture {
 
 		//Loop Variables:
 		int turnsWidth = 0;
+		int currentPixelCount = 0;
 		boolean firstPixelFound = false;
 
 		//Blob Lists:
 		ArrayList<Integer> blobX = new ArrayList<Integer>();
 		ArrayList<Integer> blobY = new ArrayList<Integer>();
+		ArrayList<Integer> blobPixels = new ArrayList<Integer>();
 
 		//Loops through Array:
 		mainLoop: while (turnsWidth < detectionArray.length) {
@@ -307,6 +312,7 @@ public class Analyze extends Capture {
 					//Adds to the ArrayLists:
 					blobX.add(turnsWidth);
 					blobY.add(turnsHeight);
+					currentPixelCount++;
 
 					//Changes First Pixel:
 					firstPixelFound = true;
@@ -344,6 +350,13 @@ public class Analyze extends Capture {
 						//Adds to the Blob ArrayLists:
 						blobX.add(turnsWidth);
 						blobY.add(turnsHeight);
+						blobPixels.add(currentPixelCount);
+						currentPixelCount = 0;
+					}
+
+					else {
+						//Adds to the Current Pixel Count:
+						currentPixelCount++;
 					}
 				}
 
@@ -353,10 +366,17 @@ public class Analyze extends Capture {
 			turnsWidth++;
 		}
 
-		//Sets the Blob Count:
+		//Sets the Blob Counts:
 		blobCount = blobX.size();
+		pixelCounts = blobPixels;
 
 		//Returns the Count:
 		return blobCount;
+	}
+
+	//Get Pixel Counts Method:
+	public static ArrayList<Integer> getBlobPixelCounts() throws Exception {
+		//Returns the Pixel Counts:
+		return pixelCounts;
 	}
 }
