@@ -179,6 +179,24 @@ public class VuforiaImageInit extends Analyze {
     return pixelCounts;
   }
 
+  //Boolean Pixel Detection Method:
+  public int detectBooleanPixelCount(int[][] rgbValues, int[] lightingMargin, int pixels) {
+    //Main Pixel Count Variable (w/ Default):
+    int pixelCount = 0;
+
+    try {
+      //Gets the Boolean Pixel Count:
+      boolean isThere = detectObject(rgbValues, lightingMargin, pixels);
+      pixelCount = getBooleanPixelCount();
+    }
+
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return pixelCount;
+  }
+
   /* CAPTURE METHODS */
 
   //Vuforia Capture Image Method:

@@ -3,9 +3,10 @@ package lib;
 import java.util.ArrayList;
 
 public class Analyze extends Capture {
-	//Detector Settings (Public Settings):
-	private static int detectorRed, detectorGreen, detectorBlue;
-	private static String detectorName;
+	//Detector Settings (w/ Defaults):
+	private static int detectorRed = 0, detectorGreen = 0, detectorBlue = 0;
+	private static String detectorName = "Detector";
+	private static int booleanPixelCount = 0;
 
 	//Blob Information ArrayList (w/ Default):
 	private static ArrayList<Integer> pixelCounts = new ArrayList<Integer>();
@@ -270,11 +271,6 @@ public class Analyze extends Capture {
 				if (detectionArray[turnsWidth][turnsHeight] == 1) {
 					//Adds to the TRUE pixels:
 					trueCount++;
-
-					if (trueCount >= countValue) {
-						valuePresent = true;
-						break mainLoop;
-					}
 				}
 
 				turnsHeight++;
@@ -282,6 +278,15 @@ public class Analyze extends Capture {
 
 			turnsWidth++;
 		}
+
+		//Checks the Case:
+		if (trueCount >= countValue) {
+			//Sets the Value:
+			valuePresent = true;
+		}
+
+		//Sets the Count Value:
+		booleanPixelCount = trueCount;
 
 		//Returns Value:
 		return valuePresent;
@@ -378,5 +383,11 @@ public class Analyze extends Capture {
 	public static ArrayList<Integer> getBlobPixelCounts() throws Exception {
 		//Returns the Pixel Counts:
 		return pixelCounts;
+	}
+
+	//Get Boolean Pixel COunt Method:
+	public static int getBooleanPixelCount() {
+		//Returns the Boolean Pixel Count:
+		return booleanPixelCount;
 	}
 }
