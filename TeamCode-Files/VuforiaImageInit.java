@@ -1,10 +1,9 @@
-package org.firstinspires.ftc.teamcode.Autonomous.Detectors;
+package org.firstinspires.ftc.teamcode.Systems.Detectors;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.vuforia.CameraDevice;
 import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
 import com.vuforia.Vuforia;
@@ -22,14 +21,7 @@ public class VuforiaImageInit extends Analyze {
   //Hardware Map Object:
   HardwareMap hardwareMap;
 
-  /*
-   * PRESET DETECTOR VALUES:
-   *
-   * Black: 0, 0, 0
-   *
-   */
-
-  /* VUFORIA PIECES */
+  /* VUFORIA VARIABLES */
 
   //Vuforia Elements:
   VuforiaLocalizer vuforia;
@@ -46,7 +38,7 @@ public class VuforiaImageInit extends Analyze {
 
   //Initialize Vuforia:
   public void initVuforia(HardwareMap hwMap, int[] detectorRGBArray,
-    String detectorName, int zoomValue, boolean flash) {
+                          String detectorName, int zoomValue, boolean flash) {
     //Declares Hardware Map:
     hardwareMap = hwMap;
 
@@ -60,7 +52,7 @@ public class VuforiaImageInit extends Analyze {
 
     //Gets the Vuforia engine:
     vuforia = ClassFactory.getInstance().createVuforia(parameters);
-    Vuforia.setFrameFormat(PIXEL_FORMAT.RGB888, true);
+    Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
 
     //Flash and Zoom for Detection:
     setFlash(flash);
@@ -124,7 +116,7 @@ public class VuforiaImageInit extends Analyze {
   //Detection Boolean Method:
   public boolean detectObject(int[][] rgbValues, int[] lightingMargin, int pixelCount) {
     //Main Boolean:
-    boolean mainBool = false; //Default Value
+    boolean mainBool = false;
 
     try {
       //Finds the Value Number of Pixels and Sets Boolean:
@@ -161,7 +153,7 @@ public class VuforiaImageInit extends Analyze {
 
   //Detection Pixel Method:
   public ArrayList<Integer> detectPixelCount(int[][] rgbValues, int[] lightingMargin,
-    int distanceThreshold) {
+                                             int distanceThreshold) {
     //Main Blob Pixel Count (w/ Default):
     ArrayList<Integer> pixelCounts = new ArrayList<Integer>();
 
@@ -212,7 +204,7 @@ public class VuforiaImageInit extends Analyze {
 
       formatLoop:
       for (int i = 0; i < numImages; i++) {
-        if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB888) {
+        if (frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
           //Creates Bitmap Image:
           rgbImage = frame.getImage(i);
           bitmapImage = Bitmap.createBitmap(rgbImage.getWidth(), rgbImage.getHeight(), Bitmap.Config.RGB_565);

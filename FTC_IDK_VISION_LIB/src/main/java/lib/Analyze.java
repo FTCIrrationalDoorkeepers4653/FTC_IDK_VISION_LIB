@@ -10,7 +10,7 @@ public class Analyze extends Capture {
 
 	//Blob Information ArrayList (w/ Default):
 	private static ArrayList<Integer> pixelCounts = new ArrayList<Integer>();
-	
+
 	/* CONSTRUCTOR AND SET METHODS */
 
 	//Contructor:
@@ -140,7 +140,7 @@ public class Analyze extends Capture {
 		//Returns the Array:
 		return section;
 	}
-	
+
 	/* COLOR ANALYSIS METHODS */
 
 	//Get Average RGB Values (FOR COMPARISON):
@@ -160,7 +160,7 @@ public class Analyze extends Capture {
 				int turnsHeight = 0;
 				secondLoop: while (turnsHeight < rgbValues[0].length) {
 					//Converts to Standard RGB Values:
-					int localRGBValues[] = convertRGB(rgbValues[turnsWidth][turnsHeight]);
+					int localRGBValues[] = convertUniversalRGB(rgbValues[turnsWidth][turnsHeight]);
 
 					//Adds to Current Average Values:
 					averageRGB[0] += localRGBValues[0];
@@ -211,7 +211,7 @@ public class Analyze extends Capture {
 				int turnsHeight = 0;
 				secondLoop: while (turnsHeight < boxValuesArray[turnsWidth].length) {
 					//Converts to Regular RGB:
-					int converted[] = convertRGB(rgbValues[turnsWidth][turnsHeight]);
+					int converted[] = convertUniversalRGB(rgbValues[turnsWidth][turnsHeight]);
 
 					//Difference Values:
 					int redDif = setRGBValues[0]-converted[0];
