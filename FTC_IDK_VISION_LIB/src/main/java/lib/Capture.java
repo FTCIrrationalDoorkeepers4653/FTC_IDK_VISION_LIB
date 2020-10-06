@@ -1,39 +1,6 @@
 package lib;
 
-import java.awt.Color;
-
 public class Capture {
-	/* UNIVERSAL RGB CONVERSION METHODS */
-
-	//Universal INT to RGB Conversion:
-	public static int[] convertUniversalRGB(int rgbValue) {
-		//RGB Array:
-		int rgb[] = new int[3];
-
-		//Gets the Values:
-		int red = new Color(rgbValue).getRed();
-		int green = new Color(rgbValue).getGreen();
-		int blue = new Color(rgbValue).getBlue();
-
-		//Sets the Values:
-		rgb[0] = red;
-		rgb[1] = green;
-		rgb[2] = blue;
-
-		//Returns the Array:
-		return rgb;
-	}
-
-	//Universal RGB to INT Conversion:
-	public static int convertUniversalINT(int rgbArray[]) {
-		//RGB Integer and Color:
-		int rgb = 0;
-		rgb = new Color(rgbArray[0], rgbArray[1], rgbArray[2]).getRGB();
-
-		//Returns the Integer:
-		return rgb;
-	}
-
 	/* RGB 888 CONVERSION METHODS */
 
 	//Converts Standard RGB into Usable RGB:
@@ -62,5 +29,46 @@ public class Capture {
 
 		//Returns Value:
 		return standardColorValue;
+	}
+
+	/* GRAYSCALE AND NORMALIZATION METHODS */
+
+	//RGB to GrayScale Method:
+	public static int getGrayscale(int rgb[]) throws Exception {
+		//Weights;
+		double redWeight = 0.2126;
+		double greenWeight = 0.7152;
+		double blueWeight = 0.0722;
+
+		//Multiplies the RGB by the Weights:
+		int redWeighted = (int)(rgb[0] * redWeight);
+		int greenWeighted = (int)(rgb[1] * greenWeight);
+		int blueWeighted = (int)(rgb[2] * blueWeight);
+
+		//Gets the GrayScale Value:
+		int grayscale = redWeighted + greenWeighted + blueWeighted;
+
+		//Returns the GrayScale Value:
+		return grayscale;
+	}
+
+	//RGB Normalization:
+	public static int normalizeValue(int rgbValue) throws Exception {
+		//Normalized RGB:
+		int newRGBValue = rgbValue;
+
+		//Checks the Case:
+		if (newRGBValue > 255) {
+			//Sets the RGB Value:
+			newRGBValue = 255;
+		}
+
+		else if (newRGBValue < 0) {
+			//Sets the RGB Value:
+			newRGBValue = 0;
+		}
+
+		//Returns the Normalized Array:
+		return newRGBValue;
 	}
 }
