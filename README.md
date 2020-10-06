@@ -33,7 +33,7 @@ For more information, visit: https://docs.google.com/presentation/d/15Jl5zCvmG0F
 Sample Pipeline:
 ```Java 
  //Detection Pipeline:
- public boolean sampleLeftPipeline() {
+ public boolean samplePipeline() {
    //Arrays:
    int detector[] = { 0, 0, 0 };
    int lightingArray[] = { 25, 25, 25 };   
@@ -43,11 +43,11 @@ Sample Pipeline:
    Camera.initDetector("Detector", detector);
 
    //Gets the Bitmap and RGB Values:
-   Bitmap objectImage = VuforiaImageInit.getImage(0.1);
-   int leftRGBArray[][] = VuforiaImageInit.getRGBArray(objectImage, 12, 20, 20, 16);
+   Bitmap image = Camera.getImage(0.1);
+   int rgb[][] = Camera.getBitmapRGB(image, 0, 0, image.getWidth(), image.getHeight());
 
    //Detects an Object and Returns:
-   boolean foundLeft = imageInit.detect(leftRGBArray, lightingArray, 20);
+   boolean foundLeft = Camera.detect(rgb, lightingArray, 20);
    return foundLeft;
  }
 ```
