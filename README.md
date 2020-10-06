@@ -31,10 +31,16 @@ For more information, visit: https://docs.google.com/presentation/d/15Jl5zCvmG0F
 ## Instructions:
 
 Sample Pipeline:
-```Java
+```Java 
+ //Detection Pipeline:
  public boolean sampleLeftPipeline() {
-   //Margin of Error Array:
-   int lightingArray[] = { 25, 25, 25 };
+   //Arrays:
+   int detector[] = { 0, 0, 0 };
+   int lightingArray[] = { 25, 25, 25 };   
+
+   //Initialization:
+   Camera.initVuforia(hardwareMap, 20, true);
+   Camera.initDetector("Detector", detector);
 
    //Gets the Bitmap and RGB Values:
    Bitmap objectImage = VuforiaImageInit.getImage(0.1);
