@@ -8,6 +8,8 @@ This library is a library that we have derived from Yamuna Software Solutions's,
 application and computer vision library. The library includes all of your possible computer vision needs including color sampling, motion tracking,
 object detection, and blob detection.
 
+For more information, visit: https://docs.google.com/presentation/d/15Jl5zCvmG0FUKjGg9StxLcLe4oXixky9quh6ihowrpA/edit?usp=sharing.
+
 ## Installation:
 
 1. Open FTC project in <i>Android Studio</i> (no OnBot Java :[ )... <b>Gradle Scripts -> TeamCode-build.gradle -> add the lines</b>

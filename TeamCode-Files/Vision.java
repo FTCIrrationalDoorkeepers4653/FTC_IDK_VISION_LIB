@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Systems.Vision;
 import android.graphics.Bitmap;
 import java.util.ArrayList;
 import lib.Analyze;
+import lib.ImageRecognition;
 
 public class Vision extends Analyze {
   /* SETUP METHODS */
@@ -54,16 +55,51 @@ public class Vision extends Analyze {
     return rgbValues;
   }
 
+  /* MACHINE LEARNING METHODS */
+
+  //Object Detection Method:
+  public static boolean detectObject(int rgbValues[][], String identifier, int grid,
+    double percentage) {
+    //Gets the Object in RGB Values:
+    boolean isThere = false;
+
+    try {
+      //Gets the Object Detection:
+      isThere = ImageRecognition.authenticateImage(identifier, rgbValues,
+        0, 0, percentage, grid);
+    }
+
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    //Returns the Detection:
+    return isThere;
+  }
+
+  //Object Training Method:
+  public static void trainObject(int rgbValues[][], String identifier, int grid) {
+    try {
+      //Trains a Model on RGB Values:
+      ImageRecognition.trainImage(identifier, rgbValues, 0, 0,
+        0, grid);
+    }
+
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   /* DETECTOR METHODS */
 
   //RGB Comparison Method:
-  public static int[] getAverageRGBValues(int singleRGBValues[][]) {
+  public static int[] getAverageRGBValues(int rgbValues[][]) {
     //Main Array:
     int localAverage[] = new int[3];
 
     try {
       //Computes the Average:
-      localAverage = averageRGBValues(singleRGBValues);
+      localAverage = averageRGBValues(rgbValues);
     }
 
     catch (Exception e) {
@@ -131,7 +167,8 @@ public class Vision extends Analyze {
   }
 
   //Blob Detection Pixel Method:
-  public static ArrayList<Integer> detectBlobsPixelCount(int[][] rgbValues, int[] lightingMargin, int distanceThreshold) {
+  public static ArrayList<Integer> detectBlobsPixelCount(int[][] rgbValues, int[] lightingMargin,
+    int distanceThreshold) {
     //Main Blob Pixel Count (w/ Default):
     ArrayList<Integer> pixelCounts = new ArrayList<Integer>();
 
