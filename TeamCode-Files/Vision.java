@@ -14,7 +14,7 @@ public class Vision extends Analyze {
   }
 
   //Detector Setup:
-  public static void setDetector(String detectorName, int rgb[]) {
+  public static void initDetector(String detectorName, int rgb[]) {
     try {
       //Detector Setup:
       initDetector(detectorName, rgb[0], rgb[1], rgb[2]);
