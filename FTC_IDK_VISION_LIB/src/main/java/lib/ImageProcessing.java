@@ -1,5 +1,6 @@
 package lib;
 
+@SuppressWarnings("unused")
 public class ImageProcessing extends Analyze {
 	/* CONSTRUCTOR */
 	public ImageProcessing() {

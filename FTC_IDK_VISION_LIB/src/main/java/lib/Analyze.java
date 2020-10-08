@@ -2,14 +2,18 @@ package lib;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("unused")
 public class Analyze extends Capture {
 	//Detector Settings (w/ Defaults):
 	private static int detectorRed = 0, detectorGreen = 0, detectorBlue = 0;
+	private static int detectorArray[] = new int[3];
 	private static String detectorName = "Detector";
 	private static int booleanPixelCount = 0;
 
 	//Blob Information ArrayList (w/ Default):
 	private static ArrayList<Integer> pixelCounts = new ArrayList<Integer>();
+	private static ArrayList<Integer> x = new ArrayList<Integer>();
+	private static ArrayList<Integer> y = new ArrayList<Integer>();
 
 	/* CONSTRUCTOR AND SET METHODS */
 
@@ -19,10 +23,9 @@ public class Analyze extends Capture {
 	}
 
 	//Initializes Detector:
-	public static void initDetector(String localDetectorName, int red, int green, int blue)
-			throws Exception {
+	public static void initDetector(String localDetectorName, int red, int green, int blue) throws Exception {
 		//Sets the Detector Name:
-		detectorName = localDetectorName; //Used for Debugging
+		detectorName = localDetectorName;
 
 		//Checks Case:
 		if (red <= 255 && red >= 0 && green <= 255 && green >= 0 && blue <= 255 && blue >= 0) {
@@ -38,6 +41,11 @@ public class Analyze extends Capture {
 			detectorGreen = 0;
 			detectorBlue = 0;
 		}
+
+		//Sets the Detection Array:
+		detectorArray[0] = detectorRed;
+		detectorArray[1] = detectorGreen;
+		detectorArray[2] = detectorBlue;
 	}
 
 	/* IMAGE SCREENING */
@@ -189,8 +197,7 @@ public class Analyze extends Capture {
 	}
 
 	//Binary Detector (Converts to Zeros and Ones):
-	public static int[][] binaryDetector(int[][] rgbValues, int[] lightingMargin)
-			throws Exception {
+	public static int[][] binaryDetector(int[][] rgbValues, int[] lightingMargin) throws Exception {
 		//Box Values Array:
 		int boxValuesArray[][] = new int[rgbValues.length][rgbValues[0].length];
 		int setRGBValues[] = new int[3];
@@ -213,22 +220,14 @@ public class Analyze extends Capture {
 					//Converts to Regular RGB:
 					int converted[] = convertRGB(rgbValues[turnsWidth][turnsHeight]);
 
-					//Difference Values:
-					int redDif = setRGBValues[0]-converted[0];
-					int greenDif = setRGBValues[1]-converted[1];
-					int blueDif = setRGBValues[2]-converted[2];
-
-					//Multiply Values:
-					int testRG = redDif*greenDif;
-					int testRB = redDif*blueDif;
-					int testGB = greenDif*blueDif;
-
-					if (Math.abs(redDif) <= lightingMargin[0] && Math.abs(greenDif) <= lightingMargin[1] && Math.abs(blueDif) <= lightingMargin[2] &&
-							testRG >= 0 && testRB >= 0 && testGB >= 0) {
+					//Checks the Case:
+					if (isWithinRange(detectorArray, converted, lightingMargin)) {
+						//Sets the Values:
 						boxValuesArray[turnsWidth][turnsHeight] = 1;
 					}
 
 					else {
+						//Sets the Values:
 						boxValuesArray[turnsWidth][turnsHeight] = 0;
 					}
 
@@ -240,7 +239,7 @@ public class Analyze extends Capture {
 		}
 
 		else {
-			//Error Message:
+			//Error Debugs:
 			System.out.println("Incorrect RGB Values Length!");
 		}
 
@@ -248,7 +247,63 @@ public class Analyze extends Capture {
 		return boxValuesArray;
 	}
 
-	/* VALUE METHODS */
+	/* DETECTION METHODS */
+
+	//Get Nearest Pixel Specified (IF PRESENT):
+	public static int[] getNearestPixel(int rgbValues[][], int lightingMargin[]) throws Exception {
+		//Main Coordinates Array (w/ Default):
+		int coordinates[] = new int[2];
+		int lowestDistance = 0, distance = 0;
+
+		//Checks the Case:
+		if (rgbValues.length != 0) {
+			//Loop Variables:
+			int turnsWidth  = 0;
+			int detectionCount = 0;
+
+			//Loops through Array:
+			mainLoop: while (turnsWidth < rgbValues.length) {
+				//Loop variable:
+				int turnsHeight = 0;
+				secondLoop: while (turnsHeight < rgbValues[0].length) {
+					//Gets the RGB Array Values:
+					int localRGB[] = convertRGB(rgbValues[turnsWidth][turnsHeight]);
+					distance = (int)(getDistance(localRGB, detectorArray));
+
+					//Checks the Case:
+					if (isWithinRange(detectorArray, localRGB, lightingMargin)) {
+						//Adds to the Detection Count:
+						detectionCount++;
+
+						//Checks the Case:
+						if (detectionCount == 0) {
+							//Sets the Coordinates and Distance:
+							coordinates[0] = turnsWidth;
+							coordinates[1] = turnsHeight;
+							lowestDistance = distance;
+						}
+
+						else {
+							//Checks the Case:
+							if (distance <= lowestDistance) {
+								//Sets the Coordinates and Distance:
+								coordinates[0] = turnsWidth;
+								coordinates[1] = turnsHeight;
+								lowestDistance = distance;
+							}
+						}
+					}
+
+					turnsHeight++;
+				}
+
+				turnsWidth++;
+			}
+		}
+
+		//Returns the Nearest Coordinate:
+		return coordinates;
+	}
 
 	//Get Selected Area Boolean (IF PRESENT):
 	public static boolean getBodyBoolean(int detectionArray[][], int pixelCount) throws Exception {
@@ -374,10 +429,14 @@ public class Analyze extends Capture {
 		//Sets the Blob Counts:
 		blobCount = blobX.size();
 		pixelCounts = blobPixels;
+		x = blobX;
+		y = blobY;
 
 		//Returns the Count:
 		return blobCount;
 	}
+
+	/* UTILITY METHODS */
 
 	//Get Pixel Counts Method:
 	public static ArrayList<Integer> getBlobPixelCounts() throws Exception {
@@ -385,9 +444,21 @@ public class Analyze extends Capture {
 		return pixelCounts;
 	}
 
-	//Get Boolean Pixel COunt Method:
-	public static int getBooleanPixelCount() {
+	//Get Boolean Pixel Count Method:
+	public static int getBooleanPixelCount() throws Exception {
 		//Returns the Boolean Pixel Count:
 		return booleanPixelCount;
+	}
+
+	//Get Blob X Method:
+	public static ArrayList<Integer> getBlobX() throws Exception {
+		//Returns the Blob X:
+		return x;
+	}
+
+	//Get Blob Y Method:
+	public static ArrayList<Integer> getBlobY() throws Exception {
+		//Returns the Blob Y:
+		return y;
 	}
 }

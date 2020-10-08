@@ -1,7 +1,8 @@
 package lib;
 
+@SuppressWarnings("unused")
 public class Capture {
-	/* RGB 888 CONVERSION METHODS */
+	/* RGB CONVERSION METHODS */
 
 	//Converts Standard RGB into Usable RGB:
 	public static int[] convertRGB(int rgbValue) throws Exception {
@@ -31,6 +32,101 @@ public class Capture {
 		return standardColorValue;
 	}
 
+	//Converts from 2D Array to Single Array RGB:
+	public static int[] singleArrayRGB(int rgb[][]) throws Exception {
+		//Main Array (w/ Default):
+		int array[] = new int[(rgb.length * rgb[0].length)];
+
+		//Loop Variable:
+		int turnsWidth = 0;
+		int turnCounter = 0;
+
+		//Loops through Array:
+		mainLoop: while (turnsWidth < rgb.length) {
+			//Loop Variable:
+			int turnsHeight = 0;
+			secondLoop: while (turnsHeight < rgb[0].length) {
+				//Sets the Array:
+				array[turnCounter] = rgb[turnsWidth][turnsHeight];
+
+				turnsHeight++;
+				turnCounter++;
+			}
+
+			turnsWidth++;
+		}
+
+		//Returns the Array:
+		return array;
+	}
+
+	/* GENERAL CALCULATION METHODS */
+
+	//Distance Method:
+	public static double getDistance(int first[], int second[]) throws Exception {
+		//Distance Value (w/ Default):
+		double distance = 0;
+
+		//Checks the Case:
+		if (first.length == second.length) {
+			//Loop Variable:
+			int turns = 0;
+
+			//Loops through Array:
+			mainLoop: while (turns < first.length) {
+				//Gets the Individual Distance:
+				distance += ((second[turns] - first[turns]) * (second[turns] - first[turns]));
+
+				turns++;
+			}
+		}
+
+		else {
+			//Error Debugs:
+			System.out.println("Invalid Array Lengths!");
+		}
+
+		//Calculates the Overall Distance:
+		distance = Math.sqrt(distance);
+
+		//Returns the Distance:
+		return distance;
+	}
+
+	//Pixel Within Range Method:
+	public static boolean isWithinRange(int rgb[], int check[], int margin[]) throws Exception {
+		//Main Boolean (w/ Default):
+		boolean isWithin = false;
+
+		//Checks the Case:
+		if (rgb.length == 3 && check.length == 3 && margin.length == 3) {
+			//Gets the Differences:
+			int diffRed = Math.abs((check[0] - rgb[0]));
+			int diffGreen = Math.abs((check[1] - rgb[1]));
+			int diffBlue = Math.abs((check[2] - rgb[2]));
+
+			//Checks the Case:
+			if (diffRed <= margin[0] && diffGreen <= margin[1] && diffBlue <= margin[2]) {
+				//Sets the Boolean:
+				isWithin = true;
+			}
+		}
+
+		else {
+			//Error Debugs:
+			System.out.println("Invalid Array Input!");
+		}
+
+		//Returns the Boolean:
+		return isWithin;
+	}
+
+	//Random Method:
+	public static double randomDouble(double min, double max) throws Exception {
+		//Returns the Random Value:
+		return (min + (Math.random() * (Math.abs((max - min)))));
+	}
+
 	/* GRAYSCALE AND NORMALIZATION METHODS */
 
 	//RGB to GrayScale Method:
@@ -41,9 +137,9 @@ public class Capture {
 		double blueWeight = 0.0722;
 
 		//Multiplies the RGB by the Weights:
-		int redWeighted = (int)(rgb[0] * redWeight);
-		int greenWeighted = (int)(rgb[1] * greenWeight);
-		int blueWeighted = (int)(rgb[2] * blueWeight);
+		int redWeighted = (int) (rgb[0] * redWeight);
+		int greenWeighted = (int) (rgb[1] * greenWeight);
+		int blueWeighted = (int) (rgb[2] * blueWeight);
 
 		//Gets the GrayScale Value:
 		int grayscale = redWeighted + greenWeighted + blueWeighted;

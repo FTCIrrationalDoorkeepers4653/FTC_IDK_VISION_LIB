@@ -5,6 +5,7 @@ import lib.ImageProcessing.CONV_TYPE;
 import com.yamunasoftware.java.Tools.*;
 import com.yamunasoftware.java.Main.*;
 
+@SuppressWarnings("unused")
 public class ImageRecognition extends Analyze {
 	//Global Data Sets:
 	private static ArrayList<Double> xSet = new ArrayList<Double>();
@@ -18,7 +19,7 @@ public class ImageRecognition extends Analyze {
 	/* TRAINING METHODS */
 	
 	@SuppressWarnings("unused")
-	//Train Image for Image Recognition (BufferedImage): 
+	//Train Image for Image Recognition:
 	public static void trainImage(String identifier, int rgbValues[][], double sideTrim, 
 		double vertTrim, double padding, int vectorGrid) throws Exception {
 		//Checks the Case:
