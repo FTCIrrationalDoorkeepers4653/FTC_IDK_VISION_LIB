@@ -1,13 +1,11 @@
 apply plugin: 'java-library'
 
-//JitPack Repository:
 allprojects {
   repositories {
     maven { url 'https://jitpack.io' }
   }
 }
 
-//Dependencies (ML Library Included):
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
   implementation 'com.github.yamunasoftware18:UILA_API:1.2.6'
