@@ -1,6 +1,9 @@
-package org.firstinspires.ftc.teamcode.Systems.Vision;
+package org.firstinspires.ftc.teamcode.Systems.Vision.Lib;
 
 import android.graphics.Bitmap;
+
+import org.firstinspires.ftc.teamcode.Systems.Vision.Lib.Camera;
+
 import java.util.ArrayList;
 
 @SuppressWarnings("unused")

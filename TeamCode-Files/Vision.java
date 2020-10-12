@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Systems.Vision;
+package org.firstinspires.ftc.teamcode.Systems.Vision.Lib;
 
 import android.graphics.Bitmap;
 import java.util.ArrayList;

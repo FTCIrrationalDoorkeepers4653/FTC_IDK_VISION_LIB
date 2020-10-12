@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Systems.Vision;
+package org.firstinspires.ftc.teamcode.Systems.Vision.Lib;
 
 import android.graphics.Bitmap;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -7,6 +7,7 @@ import com.vuforia.PIXEL_FORMAT;
 import com.vuforia.Vuforia;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @SuppressWarnings("unused")
@@ -18,8 +19,6 @@ public class Camera extends Vision {
 
   //Vuforia Elements:
   static VuforiaLocalizer vuforia;
-  static String VUFORIA_KEY =
-      "AR7KPuz/////AAABmSKvAg58mkBSqvvfxvaYqxMN8S2CvbOIzcpLyLVqb9hLPXQf3hPCERtF9azaj5sBUezFRBqdVA53ZAsNmlWW/ThqkaHtmpKNqXneP6p8VhN4liG3ofA7Cidx234PKNIhalLvby0jdmuxT5Uhh4dJjST6taoZGArAQz7Df8hzPG26Nd92L1ATW3mO4qzNAny2UK5YrzG92bUIxqvpDLkjeq8UNTLHYD4ulI1i+Jl/dPzU2PdeNPEqlsykdshGvcuRWRz8qeMXfpKVZ9TXmLxqvuTe6K291gxuKtfWXJ11rYJHTJlUAvooMpPaAh2/isv6LUy83+3UhIyl1kNxaNeMHK52iqEjpswOiOmVkniWTblp";
   static VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
 
   //Image Variables:
@@ -33,7 +32,7 @@ public class Camera extends Vision {
   }
 
   //Initialize Vuforia:
-  public static void initVuforia(HardwareMap hwMap, int zoomValue, boolean flash) {
+  public static void initVuforia(HardwareMap hwMap, String API_KEY, int zoomValue, boolean flash) {
     /* Hardware Setup */
 
     //Declares Hardware Map:
@@ -44,7 +43,7 @@ public class Camera extends Vision {
     VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
     //Sets the Vuforia Elements:
-    parameters.vuforiaLicenseKey = VUFORIA_KEY;
+    parameters.vuforiaLicenseKey = API_KEY;
     parameters.cameraDirection = CAMERA_CHOICE;
 
     //Gets the Vuforia engine:
