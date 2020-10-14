@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Systems.Vision.Lib;
+package org.firstinspires.ftc.teamcode.Systems.Vision;
 
 import android.graphics.Bitmap;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -20,8 +20,6 @@ public class Camera extends Vision {
   //Vuforia Elements:
   static VuforiaLocalizer vuforia;
   static VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
-
-  //Image Variables:
   public static int globalWidth = 0, globalHeight = 0;
 
   /* VUFORIA METHODS */
@@ -61,6 +59,8 @@ public class Camera extends Vision {
     com.vuforia.CameraDevice.getInstance().setField("opti-zoom", "opti-zoom-on");
     com.vuforia.CameraDevice.getInstance().setField("zoom", zoomSetting);
   }
+
+  /* IMAGE METHODS */
 
   //Vuforia Capture Image Method:
   public static Bitmap getImage(double resizeRatio) {
