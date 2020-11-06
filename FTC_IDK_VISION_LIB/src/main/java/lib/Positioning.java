@@ -2,68 +2,93 @@ package lib;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("unused")
 public class Positioning {
   /* VISION POSITIONING VARIABLES */
 
   //Positioning Data (w/ Defaults):
-  private static int referencePixel[] = new int[2], centerPixel[] = new int[2];
-  private static double referenceDistanceInches = 0, cameraOffsetX = 0, cameraOffsetY = 0;
+  private static int centerPixel[] = new int[2];
+  private static int frameWidth = 0, frameHeight = 0;
+  private static double cameraOffsetX = 0, cameraOffsetY = 0, distanceOfField = 0;
 
   //Vision Positioning Output Variables (w/ Defaults):
   private static ArrayList<Double> alignX = new ArrayList<Double>();
   private static ArrayList<Double> alignY = new ArrayList<Double>();
-
-  /* VISION POSITIONING SETUP METHODS */
-
-  //Initialize Vision Positioning:
-  public static void initVisionPosition(int reference[], double referenceDistance, double camOffsetX,
-    double camOffsetY) {
-    //Sets Distances and Offsets:
-    referenceDistanceInches = referenceDistance;
-    cameraOffsetX = camOffsetX;
-    cameraOffsetX = camOffsetY;
-
-    //Checks the Case:
-    if (reference.length == 2) {
-      //Sets the Reference Pixel:
-      referencePixel = reference;
-    }
-
-    else {
-      //Sets the Reference Pixel Coordinates:
-      referencePixel[0] = 0;
-      referencePixel[1] = 0;
-    }
-  }
+  private static ArrayList<Double> distance = new ArrayList<Double>();
+  private static ArrayList<Double> theta = new ArrayList<Double>();
 
   /* VISION POSITIONING METHODS */
 
-  //Gets the Distances
+  //Initialize Vision Positioning:
+  public static void initVisionPosition(int width, int height, double depthOfField,
+    double camOffsetX, double camOffsetY) {
+    //Sets Distances and Offsets:
+    distanceOfField = depthOfField;
+    cameraOffsetX = camOffsetX;
+    cameraOffsetX = camOffsetY;
+    frameWidth = width;
+    frameHeight = height;
 
-  /* VISION POSITIONING CALCULATION METHODS */
-
-  //Center of Image Method:
-  public static int[] getCenter(int width, int height) {
-    //Gets the Center Coordinates:
-    int x = (width / 2);
-    int y = height;
-
-    //Formats and Returns Array:
-    int center[] = {x, y};
-    centerPixel = center;
-    return center;
+    //Pixel Settings:
+    centerPixel[0] = (width / 2);
+    centerPixel[1] = (height /2);
   }
 
-  //Get Ray Coordinates Method:
-  public static int[] getRayCast(int coordinate[]) {
-    //Main RayCast Coordinate:
-    int rayCoordinate[] = new int[2];
-    rayCoordinate[1] = referencePixel[1];
+  //Vision Positioning Method:
+  public static void getVisionPosition(int x[], int y[]) {
+    //Checks the Case:
+    if (x.length == y.length) {
+      //Loop Variables:
+      int turns = 0;
+      double distancePerPixel = (frameWidth / distanceOfField);
 
-    //Gets the Initial Slope and X-Coordinate:
-    double initialSlope = ((Math.abs(coordinate[1] - centerPixel[1])) / (Math.abs(coordinate[0] - centerPixel[0])));
-    rayCoordinate[0] = (int)(((Math.abs(rayCoordinate[1] - coordinate[1])) / initialSlope) + coordinate[0]);
-    return rayCoordinate;
+      //Loops through Arrays:
+      mainLoop: while (turns < x.length) {
+        //Gets the Triangle Values:
+        int localPixel[] = {x[turns], y[turns]};
+        double triangle[] = getTriangle(centerPixel, localPixel);
+
+        //Gets the Output Values:
+        double localOffsetX = ((triangle[1] * distancePerPixel) + cameraOffsetX);
+        double localOffsetY = ((triangle[2] * distancePerPixel) + cameraOffsetY);
+        double localDistance = (triangle[0] * distancePerPixel);
+        double localTheta = triangle[3];
+
+        //Sets the ArrayLists:
+        alignX.add(localOffsetX);
+        alignY.add(localOffsetY);
+        distance.add(localDistance);
+        theta.add(localTheta);
+
+        turns++;
+      }
+    }
+
+    else {
+      //Error Debugs:
+      System.err.println("Invalid Array Lengths!");
+    }
+  }
+
+  /* VISION POSITION CALCULATION METHODS */
+
+  //Triangle Calculation Method:
+  public static double[] getTriangle(int a[], int b[]) {
+    //Gets the Distance Values:
+    double values[] = new double[4];
+    double hypotenuse = getDistance(a, b);
+
+    //Gets the Angle Values:
+    double yLeg = b[1] - a[1];
+    double xLeg = b[0] - b[0];
+    double theta = Math.atan2(xLeg, yLeg);
+
+    //Formats and Returns Values:
+    values[0] = hypotenuse;
+    values[1] = xLeg;
+    values[2] = yLeg;
+    values[3] = theta;
+    return values;
   }
 
   //Distance Calculation Method:
@@ -89,5 +114,17 @@ public class Positioning {
   public static ArrayList<Double> getAlignY() {
     //Returns the Y Alignments:
     return alignY;
+  }
+
+  //Get Distance Method:
+  public static ArrayList<Double> getDistance() {
+    //Returns the Distances:
+    return distance;
+  }
+
+  //Get Theta Method:
+  public static ArrayList<Double> getTheta() {
+    //Returns the Thetas:
+    return theta;
   }
 }

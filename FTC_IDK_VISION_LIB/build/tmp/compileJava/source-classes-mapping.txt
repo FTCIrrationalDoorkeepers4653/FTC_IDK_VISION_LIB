@@ -1,0 +1,11 @@
+lib/Analyze.java
+ lib.Analyze
+lib/ImageProcessing.java
+ lib.ImageProcessing
+ lib.ImageProcessing$CONV_TYPE
+lib/Capture.java
+ lib.Capture
+lib/ImageRecognition.java
+ lib.ImageRecognition
+lib/Positioning.java
+ lib.Positioning
