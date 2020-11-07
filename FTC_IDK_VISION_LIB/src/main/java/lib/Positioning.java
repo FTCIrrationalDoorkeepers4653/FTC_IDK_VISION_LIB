@@ -81,7 +81,7 @@ public class Positioning {
     //Gets the Angle Values:
     double yLeg = b[1] - a[1];
     double xLeg = b[0] - b[0];
-    double theta = Math.atan2(xLeg, yLeg);
+    double theta = convertAngle(Math.atan2(xLeg, yLeg), true);
 
     //Formats and Returns Values:
     values[0] = hypotenuse;
@@ -89,6 +89,24 @@ public class Positioning {
     values[2] = yLeg;
     values[3] = theta;
     return values;
+  }
+
+  //Angle Conversion Method:
+  public static double convertAngle(double angle, boolean degrees) {
+    //Degrees Double:
+    double angleDegrees = ((180.0 / Math.PI) * angle);
+    double angleRadians = ((Math.PI / 180.0) * angle);
+
+    //Checks the Case:
+    if (degrees) {
+      //Returns the Angle:
+      return angleDegrees;
+    }
+
+    else {
+      //Returns the Angle:
+      return angleRadians;
+    }
   }
 
   //Distance Calculation Method:
