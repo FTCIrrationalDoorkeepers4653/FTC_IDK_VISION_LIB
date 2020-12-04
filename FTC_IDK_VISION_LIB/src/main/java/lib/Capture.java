@@ -121,6 +121,20 @@ public class Capture {
 		return isWithin;
 	}
 
+	//Checks Value Within Range:
+	public static boolean isValueRange(int value, int min, int max) throws Exception {
+		//Checks the Case:
+		if (value >= min && value <= max) {
+			//Returns Value:
+			return true;
+		}
+
+		else {
+			//Returns Value:
+			return false;
+		}
+	}
+
 	//Random Method:
 	public static double randomDouble(double min, double max) throws Exception {
 		//Returns the Random Value:

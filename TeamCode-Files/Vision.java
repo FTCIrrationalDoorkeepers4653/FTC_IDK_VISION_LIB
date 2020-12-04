@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Systems.Vision;
 import android.graphics.Bitmap;
 import java.util.ArrayList;
 import lib.Analyze;
+import lib.ImageCorrection;
 import lib.ImageProcessing;
 import lib.ImageRecognition;
 import lib.Positioning;
@@ -12,9 +13,10 @@ public class Vision extends Analyze {
   /* VISION VARIABLES */
 
   //Vision Objects:
-  public static Positioning positioning = new Positioning();
+  private static Positioning positioning = new Positioning();
   private static ImageRecognition recognition = new ImageRecognition();
   private static ImageProcessing processing = new ImageProcessing();
+  private static ImageCorrection correction = new ImageCorrection();
 
   //YOLO Detection Information Variables:
   private static ArrayList<Integer> detectionX = new ArrayList<Integer>();
@@ -34,6 +36,18 @@ public class Vision extends Analyze {
     try {
       //Detector Setup:
       initDetector(detectorName, rgb[0], rgb[1], rgb[2]);
+    }
+
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  //Vision Positioning Setup:
+  public static void initPositioning(int width, int height, double depth, double x, double y) {
+    try {
+      //Positioning Setup:
+      positioning.initVisionPosition(width, height, depth, x, y);
     }
 
     catch (Exception e) {

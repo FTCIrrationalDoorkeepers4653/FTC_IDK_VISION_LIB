@@ -3,7 +3,7 @@ package lib;
 import java.util.ArrayList;
 
 @SuppressWarnings("unused")
-public class Positioning {
+public class Positioning extends Capture {
   /* VISION POSITIONING VARIABLES */
 
   //Positioning Data (w/ Defaults):
@@ -19,9 +19,14 @@ public class Positioning {
 
   /* VISION POSITIONING METHODS */
 
+  //Constructor:
+  public Positioning() {
+    super();
+  }
+
   //Initialize Vision Positioning:
   public static void initVisionPosition(int width, int height, double depthOfField,
-    double camOffsetX, double camOffsetY) {
+    double camOffsetX, double camOffsetY) throws Exception {
     //Sets Distances and Offsets:
     distanceOfField = depthOfField;
     cameraOffsetX = camOffsetX;
@@ -35,7 +40,7 @@ public class Positioning {
   }
 
   //Vision Positioning Method:
-  public static void getVisionPosition(int x[], int y[]) {
+  public static void getVisionPosition(int x[], int y[]) throws Exception {
     //Checks the Case:
     if (x.length == y.length) {
       //Loop Variables:
@@ -73,7 +78,7 @@ public class Positioning {
   /* VISION POSITION CALCULATION METHODS */
 
   //Triangle Calculation Method:
-  public static double[] getTriangle(int a[], int b[]) {
+  public static double[] getTriangle(int a[], int b[]) throws Exception {
     //Gets the Distance Values:
     double values[] = new double[4];
     double hypotenuse = getDistance(a, b);
@@ -92,7 +97,7 @@ public class Positioning {
   }
 
   //Angle Conversion Method:
-  public static double convertAngle(double angle, boolean degrees) {
+  public static double convertAngle(double angle, boolean degrees) throws Exception {
     //Degrees Double:
     double angleDegrees = ((180.0 / Math.PI) * angle);
     double angleRadians = ((Math.PI / 180.0) * angle);
@@ -109,39 +114,28 @@ public class Positioning {
     }
   }
 
-  //Distance Calculation Method:
-  public static double getDistance(int firstPoint[], int secondPoint[]) {
-    //Gets the Differences:
-    double diffX = ((secondPoint[0] - firstPoint[0]) * (secondPoint[0] - firstPoint[0]));
-    double diffY = ((secondPoint[1] - firstPoint[1]) * (secondPoint[1] - firstPoint[1]));
-
-    //Gets the Distance:
-    double distance = Math.sqrt((diffX + diffY));
-    return distance;
-  }
-
   /* VISION POSITION UTILITY METHODS */
 
   //Get Alignment X Distance Method:
-  public static ArrayList<Double> getAlignX() {
+  public static ArrayList<Double> getAlignX() throws Exception {
     //Returns the X Alignments:
     return alignX;
   }
 
   //Get Alignment Y Distance Method:
-  public static ArrayList<Double> getAlignY() {
+  public static ArrayList<Double> getAlignY() throws Exception {
     //Returns the Y Alignments:
     return alignY;
   }
 
   //Get Distance Method:
-  public static ArrayList<Double> getDistance() {
+  public static ArrayList<Double> getDistance() throws Exception {
     //Returns the Distances:
     return distance;
   }
 
   //Get Theta Method:
-  public static ArrayList<Double> getTheta() {
+  public static ArrayList<Double> getTheta() throws Exception {
     //Returns the Thetas:
     return theta;
   }
