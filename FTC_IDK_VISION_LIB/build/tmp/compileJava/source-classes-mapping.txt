@@ -1,5 +1,5 @@
-lib/ImageCorrection.java
- lib.ImageCorrection
+lib/Capture.java
+ lib.Capture
 lib/Analyze.java
  lib.Analyze
 lib/ImageProcessing.java
@@ -9,5 +9,5 @@ lib/Positioning.java
  lib.Positioning
 lib/ImageRecognition.java
  lib.ImageRecognition
-lib/Capture.java
- lib.Capture
+lib/ImageCorrection.java
+ lib.ImageCorrection

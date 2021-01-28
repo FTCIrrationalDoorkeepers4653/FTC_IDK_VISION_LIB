@@ -36,7 +36,7 @@ public class Positioning extends Capture {
 
     //Pixel Settings:
     centerPixel[0] = (width / 2);
-    centerPixel[1] = (height /2);
+    centerPixel[1] = height;
   }
 
   //Vision Positioning Method:
