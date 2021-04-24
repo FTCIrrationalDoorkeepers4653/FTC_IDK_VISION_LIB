@@ -101,9 +101,9 @@ public class Capture {
 		//Checks the Case:
 		if (rgb.length == 3 && check.length == 3 && margin.length == 3) {
 			//Gets the Differences:
-			int diffRed = Math.abs((check[0] - rgb[0]));
-			int diffGreen = Math.abs((check[1] - rgb[1]));
-			int diffBlue = Math.abs((check[2] - rgb[2]));
+			int diffRed = Math.abs(check[0] - rgb[0]);
+			int diffGreen = Math.abs(check[1] - rgb[1]);
+			int diffBlue = Math.abs(check[2] - rgb[2]);
 
 			//Checks the Case:
 			if (diffRed <= margin[0] && diffGreen <= margin[1] && diffBlue <= margin[2]) {

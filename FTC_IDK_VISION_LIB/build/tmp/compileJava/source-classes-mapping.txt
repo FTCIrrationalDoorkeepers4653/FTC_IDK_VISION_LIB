@@ -1,13 +1,13 @@
-lib/Capture.java
- lib.Capture
+lib/ImageCorrection.java
+ lib.ImageCorrection
 lib/Analyze.java
  lib.Analyze
 lib/ImageProcessing.java
  lib.ImageProcessing
  lib.ImageProcessing$CONV_TYPE
-lib/Positioning.java
- lib.Positioning
+lib/Capture.java
+ lib.Capture
 lib/ImageRecognition.java
  lib.ImageRecognition
-lib/ImageCorrection.java
- lib.ImageCorrection
+lib/Positioning.java
+ lib.Positioning
