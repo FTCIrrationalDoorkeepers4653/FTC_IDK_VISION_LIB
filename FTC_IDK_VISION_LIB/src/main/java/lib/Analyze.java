@@ -10,10 +10,12 @@ public class Analyze extends Capture {
 	private static String detectorName = "Detector";
 	private static int booleanPixelCount = 0;
 
-	//Blob Information ArrayList (w/ Default):
+	//Blob Information ArrayLists (w/ Defaults):
 	private static ArrayList<Integer> pixelCounts = new ArrayList<Integer>();
 	private static ArrayList<Integer> x = new ArrayList<Integer>();
 	private static ArrayList<Integer> y = new ArrayList<Integer>();
+	private static ArrayList<Integer> lastX = new ArrayList<Integer>();
+	private static ArrayList<Integer> lastY = new ArrayList<Integer>();
 
 	/* CONSTRUCTOR AND SET METHODS */
 
@@ -361,6 +363,11 @@ public class Analyze extends Capture {
 		ArrayList<Integer> blobX = new ArrayList<Integer>();
 		ArrayList<Integer> blobY = new ArrayList<Integer>();
 		ArrayList<Integer> blobPixels = new ArrayList<Integer>();
+		ArrayList<Integer> blobLastX = new ArrayList<Integer>();
+		ArrayList<Integer> blobLastY = new ArrayList<Integer>();
+
+		//Last Pixels:
+		int lastPixelX = 0, lastPixelY = 0;
 
 		//Loops through Array:
 		mainLoop: while (turnsWidth < detectionArray.length) {
@@ -385,10 +392,9 @@ public class Analyze extends Capture {
 					//Loops through ArrayLists:
 					blobLoop: while (turnsBlob < blobX.size()) {
 						//Gets the Distance:
-						int distanceValue = (int)(Math.sqrt(
-								(( (turnsHeight - blobY.get(turnsBlob)) * (turnsHeight - blobY.get(turnsBlob)) ) +
-										( (turnsWidth - blobX.get(turnsBlob)) * (turnsWidth - blobX.get(turnsBlob)) ))
-						));
+						int distanceValue = (int) (Math
+								.sqrt((((turnsHeight - blobY.get(turnsBlob)) * (turnsHeight - blobY.get(turnsBlob)))
+										+ ((turnsWidth - blobX.get(turnsBlob)) * (turnsWidth - blobX.get(turnsBlob))))));
 
 						//Checks Prev Distance Case:
 						if (prevDistance == -1) {
@@ -411,6 +417,8 @@ public class Analyze extends Capture {
 						blobX.add(turnsWidth);
 						blobY.add(turnsHeight);
 						blobPixels.add(currentPixelCount);
+						blobLastX.add(lastPixelX);
+						blobLastY.add(lastPixelY);
 						currentPixelCount = 0;
 					}
 
@@ -418,6 +426,13 @@ public class Analyze extends Capture {
 						//Adds to the Current Pixel Count:
 						currentPixelCount++;
 					}
+				}
+
+				//Checks the Case:
+				if (detectionArray[turnsWidth][turnsHeight] == 1) {
+					//Sets the Last Pixel:
+					lastPixelX = turnsWidth;
+					lastPixelY = turnsHeight;
 				}
 
 				turnsHeight++;
@@ -448,6 +463,18 @@ public class Analyze extends Capture {
 	public static int getBooleanPixelCount() throws Exception {
 		//Returns the Boolean Pixel Count:
 		return booleanPixelCount;
+	}
+
+	//Get the Last Blob X Method:
+	public static ArrayList<Integer> getLastBlobX() throws Exception {
+		//Returns the Last Blob X:
+		return lastX;
+	}
+
+	//Get the Last Blob Y Method:
+	public static ArrayList<Integer> getLastBlobY() throws Exception {
+		//Returns the Last Blob Y:
+		return lastY;
 	}
 
 	//Get Blob X Method:

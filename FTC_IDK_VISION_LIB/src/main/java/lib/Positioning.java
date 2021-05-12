@@ -46,7 +46,7 @@ public class Positioning extends Capture {
   /* VISION POSITIONING METHODS */
 
   //Vision Positioning Method:
-  public static void getVisionPosition(int x[], int y[]) throws Exception {
+  public static void getVisionPosition(int x[], int y[], int lastX[], int lastY[]) throws Exception {
     //Checks the Case:
     if (x.length == y.length) {
       //Loop Variables:
@@ -55,7 +55,7 @@ public class Positioning extends Capture {
       //Loops through Arrays:
       mainLoop: while (turns < x.length) {
         //Gets and Sets Values:
-        double pointPosition[] = getPointPosition(x[turns], y[turns]);
+        double pointPosition[] = getPointPosition(x[turns], y[turns], lastX[turns], lastY[turns]);
         distance.add(pointPosition[0]);
         offset.add(pointPosition[1]);
 
@@ -70,16 +70,17 @@ public class Positioning extends Capture {
   }
 
   //Point Positioning Method:
-  public static double[] getPointPosition(int x, int y) throws Exception {
+  public static double[] getPointPosition(int x, int y, int lastX, int lastY) throws Exception {
     //Return Array:
     double returnArray[] = new double[2];
 
     //Gets Calculation:
     int localPixel[] = {x, y};
     double triangle[] = getTriangle(centerPixel, localPixel);
+    double distance = getDistance(x, y, lastX, lastY);
 
     //Gets the Output Values:
-    double realDistance = ((triangle[0] * yRatio) + cameraOffsetVertical);
+    double realDistance = ((distance * yRatio) + cameraOffsetVertical);
     double realOffset = (triangle[1] * xRatio);
 
     //Checks the Case:
@@ -132,6 +133,18 @@ public class Positioning extends Capture {
     values[1] = xLeg;
     values[2] = yLeg;
     return values;
+  }
+
+  //Distance Method:
+  public static double getDistance(int x, int y, int endX, int endY) throws Exception {
+    //Gets the Distance:
+    double xDiff = ((endX - x) * (endX - x));
+    double yDiff = ((endY - y) * (endY - y));
+    double sum = (xDiff + yDiff);
+    double distance = Math.sqrt(sum);
+
+    //Returns the Distance:
+    return distance;
   }
 
   /* VISION POSITION UTILITY METHODS */

@@ -16,12 +16,6 @@ public class Vision extends Analyze {
   private static ImageProcessing processing = new ImageProcessing();
   private static ImageCorrection correction = new ImageCorrection();
 
-  //YOLO Detection Information Variables:
-  private static ArrayList<Integer> detectionX = new ArrayList<Integer>();
-  private static ArrayList<Integer> detectionY = new ArrayList<Integer>();
-  private static ArrayList<Integer> detectionWidth = new ArrayList<Integer>();
-  private static ArrayList<Integer> detectionHeight = new ArrayList<Integer>();
-
   /* SETUP METHODS */
 
   //Constructor:
@@ -267,31 +261,5 @@ public class Vision extends Analyze {
 
     //Returns the Coordinates:
     return coordinates;
-  }
-
-  /* UTILITY METHODS */
-
-  //Gets the YOLO Detection X:
-  public static ArrayList<Integer> getDetectionX() {
-    //Returns the Detection X:
-    return detectionX;
-  }
-
-  //Gets the YOLO Detection Y:
-  public static ArrayList<Integer> getDetectionY() {
-    //Returns the Detection Y:
-    return detectionY;
-  }
-
-  //Gets the YOLO Detection Width:
-  public static ArrayList<Integer> getDetectionWidth() {
-    //Returns the Detection Width:
-    return detectionWidth;
-  }
-
-  //Gets the YOLO Detection Height:
-  public static ArrayList<Integer> getDetectionHeight() {
-    //Returns the Detection Height:
-    return detectionHeight;
   }
 }
