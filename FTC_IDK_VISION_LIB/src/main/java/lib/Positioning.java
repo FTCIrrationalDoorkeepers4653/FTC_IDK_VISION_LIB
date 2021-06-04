@@ -25,7 +25,7 @@ public class Positioning extends Capture {
 
   //Initialize Vision Positioning:
   public static void initVisionPosition(int width, int height, double distanceRatio,
-    double offsetRatio, double camOffsetX, double camOffsetY) throws Exception {
+                                        double offsetRatio, double camOffsetX, double camOffsetY) throws Exception {
     //Sets Ratios:
     yRatio = distanceRatio;
     xRatio = offsetRatio;
@@ -71,17 +71,17 @@ public class Positioning extends Capture {
 
   //Point Positioning Method:
   public static double[] getPointPosition(int x, int y, int lastX, int lastY) throws Exception {
-    //Return Array:
+    //Distance Calculation and Return Array:
     double returnArray[] = new double[2];
-
-    //Gets Calculation:
-    int localPixel[] = {x, y};
-    double triangle[] = getTriangle(centerPixel, localPixel);
     double distance = getDistance(x, y, lastX, lastY);
+
+    //Gets the Midpoint Calculation:
+    int mid[] = getMidpoint(x, y, lastX, lastY);
+    double midDist = getDistance(mid[0], mid[1], centerPixel[0], centerPixel[1]);
 
     //Gets the Output Values:
     double realDistance = ((distance * yRatio) + cameraOffsetVertical);
-    double realOffset = (triangle[1] * xRatio);
+    double realOffset = (midDist * xRatio);
 
     //Checks the Case:
     if (x > centerPixel[0]) {
@@ -118,23 +118,6 @@ public class Positioning extends Capture {
     }
   }
 
-  //Triangle Calculation Method:
-  public static double[] getTriangle(int a[], int b[]) throws Exception {
-    //Gets the Distance Values:
-    double values[] = new double[4];
-    double hypotenuse = getDistance(a, b);
-
-    //Gets the Angle Values:
-    double yLeg = a[1] - b[1];
-    double xLeg = a[0] - b[0];
-
-    //Formats and Returns Values:
-    values[0] = hypotenuse;
-    values[1] = xLeg;
-    values[2] = yLeg;
-    return values;
-  }
-
   //Distance Method:
   public static double getDistance(int x, int y, int endX, int endY) throws Exception {
     //Gets the Distance:
@@ -145,6 +128,17 @@ public class Positioning extends Capture {
 
     //Returns the Distance:
     return distance;
+  }
+
+  //Midpoint Method:
+  public static int[] getMidpoint(int x, int y, int endX, int endY) throws Exception {
+    //Calculates the Coordinates:
+    int xCoordinate = ((x + endX)/2);
+    int yCoordinate = ((y + endY)/2);
+    int coordinates[] = {xCoordinate, yCoordinate};
+
+    //Returns the Coordinate:
+    return coordinates;
   }
 
   /* VISION POSITION UTILITY METHODS */
