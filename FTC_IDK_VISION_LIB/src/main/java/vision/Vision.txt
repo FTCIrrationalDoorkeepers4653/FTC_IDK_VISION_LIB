@@ -1,4 +1,5 @@
-package vision;
+/* COPY THIS CLASS INTO YOUR TEAMCODE PACKAGE OF YOUR FTC PROJECT */
+package yourPackage;
 
 import android.graphics.Bitmap;
 import java.util.ArrayList;
